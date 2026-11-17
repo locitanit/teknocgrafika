@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Teknőcös sorminták</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+:root{
+  --papir:#f3f6f4; --racs:#dbe5df; --lap:#ffffff; --tinta:#1c2a33; --halvany:#5b6b73;
+  --kek:#1f5fa8; --zold:#2f8a4e; --narancs:#c9701a; --piros:#b83a3a; --vonal:#d4ddd8; --kodhatter:#eef3f0;
+  --display:"Bricolage Grotesque",system-ui,sans-serif; --body:"Source Sans 3",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --papir:#141b1f; --racs:#1e282d; --lap:#1b2429; --tinta:#e6ecef; --halvany:#9aabb3;
+  --kek:#7fb0ea; --zold:#6cc68d; --narancs:#eaa25a; --piros:#ec8a8a; --vonal:#2c393f; --kodhatter:#111719; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --papir:#141b1f; --racs:#1e282d; --lap:#1b2429; --tinta:#e6ecef; --halvany:#9aabb3;
+  --kek:#7fb0ea; --zold:#6cc68d; --narancs:#eaa25a; --piros:#ec8a8a; --vonal:#2c393f; --kodhatter:#111719; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--papir);color:var(--tinta);font:17px/1.5 var(--body);
+  background-image:linear-gradient(var(--racs) 1px,transparent 1px),linear-gradient(90deg,var(--racs) 1px,transparent 1px);background-size:24px 24px}
+.wrap{max-width:1200px;margin:0 auto;padding-inline:20px;padding-block:20px 56px}
+nav{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;margin-bottom:22px;font-weight:600}
+nav a{color:var(--kek);text-decoration:none;padding:4px 0;border-bottom:2px solid transparent}
+nav a:hover{border-bottom-color:var(--kek)}
+nav a[aria-current]{color:var(--tinta);border-bottom-color:var(--tinta)}
+nav .haz{font:800 1.05rem var(--display);color:var(--tinta);margin-right:8px}
+a:focus-visible,summary:focus-visible{outline:2px solid var(--kek);outline-offset:2px}
+header{display:grid;gap:10px;margin-bottom:24px}
+h1{font:800 clamp(2rem,5vw,3.2rem)/1.05 var(--display);margin:0;text-wrap:balance;letter-spacing:-.01em}
+.lead{margin:0;max-width:62ch;color:var(--halvany);font-size:1.1rem}
+.lead b{color:var(--tinta)}
+code{font:500 .9em var(--mono)}
+.puska{background:var(--lap);border:1px solid var(--vonal);border-radius:10px;padding:14px 18px;margin-bottom:28px;overflow-x:auto}
+.puska h3{margin:0 0 8px;font:600 .8rem var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--halvany)}
+.puska ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 18px;font:500 .88rem var(--mono)}
+.puska li span{color:var(--halvany);font-family:var(--body);font-size:.85rem}
+.racs{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:18px}
+.kartya{background:var(--lap);border:1px solid var(--vonal);border-radius:10px;padding:14px 16px 12px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.fej{display:flex;align-items:baseline;gap:8px}
+.szam{font:800 1.5rem var(--display);color:var(--kek);font-variant-numeric:tabular-nums}
+h2{font:600 1.2rem/1.2 var(--display);margin:0;flex:1}
+.szint{font-size:.95rem;letter-spacing:1px;white-space:nowrap}
+.sz1{color:var(--zold)} .sz2{color:var(--narancs)} .sz3{color:var(--piros)}
+.vaszon{background:#fff;border:1px solid var(--vonal);border-radius:6px;aspect-ratio:4/3;display:grid;place-items:center;padding:10px;max-width:100%}
+.kep{width:100%;height:100%;display:block}
+.kartya p{margin:0}
+details{border-top:1px dashed var(--vonal);padding-top:8px;margin-top:auto}
+summary{cursor:pointer;font-weight:600;color:var(--kek)}
+details p{margin-top:6px;color:var(--halvany)}
+footer{margin-top:28px;color:var(--halvany);font-size:.95rem}
+/* főoldal */
+.ket{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px;margin-bottom:18px}
+.doboz{background:var(--lap);border:1px solid var(--vonal);border-radius:10px;padding:16px 18px;min-width:0}
+.doboz h2{margin-bottom:10px}
+.doboz p{margin:0 0 10px}
+.doboz p:last-child{margin-bottom:0}
+pre{margin:0;background:var(--kodhatter);border-radius:8px;padding:12px 14px;overflow-x:auto;font:500 .88rem/1.55 var(--mono)}
+pre .m{color:var(--halvany)}
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+td{padding:5px 8px;border-top:1px solid var(--vonal);vertical-align:top}
+td:first-child{font:500 .86rem var(--mono);white-space:nowrap;width:1%;padding-right:24px}
+tr:first-child td{border-top:0}
+.tabla{overflow-x:auto}
+.cso{font:600 .78rem var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--halvany);padding-top:12px}
+ul.lista{margin:0;padding-left:20px;display:grid;gap:6px}
+.oldalak{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin:6px 0 26px}
+.oldal{background:var(--lap);border:1px solid var(--vonal);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;color:inherit;text-decoration:none;min-width:0;transition:border-color .15s}
+.oldal:hover{border-color:var(--kek)}
+.oldal h2{color:var(--kek)}
+.oldal p{margin:0;color:var(--halvany)}
+.oldal .tovabb{font-weight:600;color:var(--kek);margin-top:auto}
+.koord{display:grid;place-items:center}
+.koord svg{width:100%;max-width:300px;height:auto}
+.koord text{fill:var(--tinta);font:13px var(--body)}
+.koord .t{stroke:var(--halvany)}
+.koord .r{stroke:var(--vonal)}
+.koord .h{fill:var(--zold)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav><a class="haz" href="index.html">🐢 Teknőcgrafika</a><a href="alakzatok.html">Alakzatok</a><a href="sormintak.html" aria-current="page">Sorminták</a><a href="rekurzio.html">Rekurzió</a></nav>
+<header><h1>Teknőcös sorminták</h1><p class="lead"><b>Rajzold meg a mintákat Python turtle-lel!</b> Mindegyikben van ismétlés, és a legtöbbben egy <code>if</code> dönti el, mi jöjjön. Haladj sorban, nem baj, ha nem érsz a végére. A csillagok a nehézséget mutatják. Ha elakadsz, nyisd ki a tippet.</p></header>
+<section class="puska" aria-label="Parancsok"><h3>Emlékeztető</h3><ul><li>for i in range(10): <span>10× ismétel, i = 0…9</span></li><li>i % 2 <span>maradék 2-vel osztva</span></li><li>if i % 2 == 0: <span>ha páros</span></li><li>elif …: <span>különben, ha</span></li><li>else: <span>különben</span></li><li>and / or <span>és / vagy</span></li><li>goto(x, y) <span>odaugrik</span></li><li>dot(30, &quot;red&quot;) <span>pötty</span></li><li>circle(20, 180) <span>félkör</span></li><li>color(&quot;black&quot;, &quot;red&quot;) <span>vonal, kitöltés</span></li><li>begin_fill() … end_fill() <span>kitöltés</span></li></ul></section>
+<main class="racs">
+<article class="kartya" id="f1">
+  <div class="fej"><span class="szam">1.</span><h2>Pöttysor</h2><span class="szint sz1" title="Bemelegítő">★☆☆</span></div>
+  <div class="vaszon"><svg class="kep" xmlns="http://www.w3.org/2000/svg" viewBox="-254.0 -29.0 508.0 58.0" role="img">
+<rect x="-254.0" y="-29.0" width="508.0" height="58.0" fill="white"/>
+<circle cx="-225.0" cy="0.0" r="15.0" fill="red"/>
+<circle cx="-175.0" cy="0.0" r="15.0" fill="blue"/>
+<circle cx="-125.0" cy="0.0" r="15.0" fill="red"/>
+<circle cx="-75.0" cy="0.0" r="15.0" fill="blue"/>
+<circle cx="-25.0" cy="0.0" r="15.0" fill="red"/>
+<circle cx="25.0" cy="0.0" r="15.0" fill="blue"/>
+<circle cx="75.0" cy="0.0" r="15.0" fill="red"/>
+<circle cx="125.0" cy="0.0" r="15.0" fill="blue"/>
+<circle cx="175.0" cy="0.0" r="15.0" fill="red"/>
+<circle cx="225.0" cy="0.0" r="15.0" fill="blue"/>
+</svg></div>
+  <p>Tíz pötty egy sorban, felváltva piros és kék.</p>
+  <details><summary>Tipp</summary><p>i % 2 == 0 akkor igaz, ha i páros. Pötty: dot(30, &quot;red&quot;).</p></details>
+</article>
+<article class="kartya" id="f2">
+  <div class="fej"><span class="szam">2.</span><h2>Telt és üres</h2><span class="szint sz1" title="Bemelegítő">★☆☆</span></div>
+  <div class="vaszon"><svg class="kep" xmlns="http://www.w3.org/2000/svg" viewBox="-254.0 -59.0 493.0 73.0" role="img">
+<rect x="-254.0" y="-59.0" width="493.0" height="73.0" fill="white"/>
+<polygon points="-240.0,0.0 -195.0,-0.0 -195.0,-45.0 -240.0,-45.0 -240.0,-0.0" fill="limegreen"/>
+<polyline points="-240.0,0.0 -195.0,-0.0 -195.0,-45.0 -240.0,-45.0 -240.0,-0.0" fill="none" stroke="darkgreen" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-180.0,0.0 -135.0,-0.0 -135.0,-45.0 -180.0,-45.0 -180.0,-0.0" fill="none" stroke="darkgreen" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-120.0,0.0 -75.0,-0.0 -75.0,-45.0 -120.0,-45.0 -120.0,-0.0" fill="limegreen"/>
+<polyline points="-120.0,0.0 -75.0,-0.0 -75.0,-45.0 -120.0,-45.0 -120.0,-0.0" fill="none" stroke="darkgreen" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-60.0,0.0 -15.0,-0.0 -15.0,-45.0 -60.0,-45.0 -60.0,-0.0" fill="none" stroke="darkgreen" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="0.0,0.0 45.0,-0.0 45.0,-45.0 0.0,-45.0 -0.0,-0.0" fill="limegreen"/>
+<polyline points="0.0,0.0 45.0,-0.0 45.0,-45.0 0.0,-45.0 -0.0,-0.0" fill="none" stroke="darkgreen" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="60.0,0.0 105.0,-0.0 105.0,-45.0 60.0,-45.0 60.0,-0.0" fill="none" stroke="darkgreen" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="120.0,0.0 165.0,-0.0 165.0,-45.0 120.0,-45.0 120.0,-0.0" fill="limegreen"/>
+<polyline points="120.0,0.0 165.0,-0.0 165.0,-45.0 120.0,-45.0 120.0,-0.0" fill="none" stroke="darkgreen" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="180.0,0.0 225.0,-0.0 225.0,-45.0 180.0,-45.0 180.0,-0.0" fill="none" stroke="darkgreen" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+</svg></div>
+  <p>Nyolc négyzet egy sorban: felváltva kitöltött (zöld) és üres.</p>
+  <details><summary>Tipp</summary><p>Csak a páros i-nél kell begin_fill() és end_fill(). Az if mehet a ciklus belsejébe.</p></details>
+</article>
+<article class="kartya" id="f3">
+  <div class="fej"><span class="szam">3.</span><h2>Lámpasor</h2><span class="szint sz2" title="Közepes">★★☆</span></div>
+  <div class="vaszon"><svg class="kep" xmlns="http://www.w3.org/2000/svg" viewBox="-309.0 -34.0 618.0 68.0" role="img">
+<rect x="-309.0" y="-34.0" width="618.0" height="68.0" fill="white"/>
+<circle cx="-275.0" cy="0.0" r="20.0" fill="red"/>
+<circle cx="-225.0" cy="0.0" r="20.0" fill="gold"/>
+<circle cx="-175.0" cy="0.0" r="20.0" fill="green"/>
+<circle cx="-125.0" cy="0.0" r="20.0" fill="red"/>
+<circle cx="-75.0" cy="0.0" r="20.0" fill="gold"/>
+<circle cx="-25.0" cy="0.0" r="20.0" fill="green"/>
+<circle cx="25.0" cy="0.0" r="20.0" fill="red"/>
+<circle cx="75.0" cy="0.0" r="20.0" fill="gold"/>
+<circle cx="125.0" cy="0.0" r="20.0" fill="green"/>
+<circle cx="175.0" cy="0.0" r="20.0" fill="red"/>
+<circle cx="225.0" cy="0.0" r="20.0" fill="gold"/>
+<circle cx="275.0" cy="0.0" r="20.0" fill="green"/>
+</svg></div>
+  <p>Tizenkét pötty: piros, sárga, zöld, aztán újra elölről.</p>
+  <details><summary>Tipp</summary><p>Három eset van, ezért kell az elif: i % 3 lehet 0, 1 vagy 2.</p></details>
+</article>
+<article class="kartya" id="f4">
+  <div class="fej"><span class="szam">4.</span><h2>Fogsor</h2><span class="szint sz2" title="Közepes">★★☆</span></div>
+  <div class="vaszon"><svg class="kep" xmlns="http://www.w3.org/2000/svg" viewBox="-264.0 -57.3 528.0 114.6" role="img">
+<rect x="-264.0" y="-57.3" width="528.0" height="114.6" fill="white"/>
+<polygon points="-250.0,0.0 -200.0,-0.0 -225.0,-43.3 -250.0,-0.0" fill="red"/>
+<polyline points="-250.0,0.0 -200.0,-0.0 -225.0,-43.3 -250.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-200.0,0.0 -150.0,-0.0 -175.0,43.3 -200.0,-0.0" fill="royalblue"/>
+<polyline points="-200.0,0.0 -150.0,-0.0 -175.0,43.3 -200.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-150.0,0.0 -100.0,-0.0 -125.0,-43.3 -150.0,-0.0" fill="red"/>
+<polyline points="-150.0,0.0 -100.0,-0.0 -125.0,-43.3 -150.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-100.0,0.0 -50.0,-0.0 -75.0,43.3 -100.0,-0.0" fill="royalblue"/>
+<polyline points="-100.0,0.0 -50.0,-0.0 -75.0,43.3 -100.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-50.0,0.0 0.0,-0.0 -25.0,-43.3 -50.0,-0.0" fill="red"/>
+<polyline points="-50.0,0.0 0.0,-0.0 -25.0,-43.3 -50.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="0.0,0.0 50.0,-0.0 25.0,43.3 -0.0,-0.0" fill="royalblue"/>
+<polyline points="0.0,0.0 50.0,-0.0 25.0,43.3 -0.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="50.0,0.0 100.0,-0.0 75.0,-43.3 50.0,-0.0" fill="red"/>
+<polyline points="50.0,0.0 100.0,-0.0 75.0,-43.3 50.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="100.0,0.0 150.0,-0.0 125.0,43.3 100.0,-0.0" fill="royalblue"/>
+<polyline points="100.0,0.0 150.0,-0.0 125.0,43.3 100.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="150.0,0.0 200.0,-0.0 175.0,-43.3 150.0,-0.0" fill="red"/>
+<polyline points="150.0,0.0 200.0,-0.0 175.0,-43.3 150.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="200.0,0.0 250.0,-0.0 225.0,43.3 200.0,-0.0" fill="royalblue"/>
+<polyline points="200.0,0.0 250.0,-0.0 225.0,43.3 200.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+</svg></div>
+  <p>Tíz háromszög egy vonalon: felváltva felfelé (piros) és lefelé (kék) állnak.</p>
+  <details><summary>Tipp</summary><p>Felfelé: mindig left(120). Lefelé: mindig right(120). Az if döntse el, melyik kell!</p></details>
+</article>
+<article class="kartya" id="f5">
+  <div class="fej"><span class="szam">5.</span><h2>Gyöngysor</h2><span class="szint sz2" title="Közepes">★★☆</span></div>
+  <div class="vaszon"><svg class="kep" xmlns="http://www.w3.org/2000/svg" viewBox="-284.0 -34.0 568.0 68.0" role="img">
+<rect x="-284.0" y="-34.0" width="568.0" height="68.0" fill="white"/>
+<polyline points="-270.0,0.0 270.0,0.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="-250.0" cy="0.0" r="20.0" fill="purple"/>
+<circle cx="-200.0" cy="0.0" r="10.0" fill="hotpink"/>
+<circle cx="-150.0" cy="0.0" r="20.0" fill="purple"/>
+<circle cx="-100.0" cy="0.0" r="10.0" fill="hotpink"/>
+<circle cx="-50.0" cy="0.0" r="20.0" fill="purple"/>
+<circle cx="0.0" cy="0.0" r="10.0" fill="hotpink"/>
+<circle cx="50.0" cy="0.0" r="20.0" fill="purple"/>
+<circle cx="100.0" cy="0.0" r="10.0" fill="hotpink"/>
+<circle cx="150.0" cy="0.0" r="20.0" fill="purple"/>
+<circle cx="200.0" cy="0.0" r="10.0" fill="hotpink"/>
+<circle cx="250.0" cy="0.0" r="20.0" fill="purple"/>
+</svg></div>
+  <p>Felváltva nagy lila és kis rózsaszín gyöngyök, egy vékony szálon.</p>
+  <details><summary>Tipp</summary><p>Először húzd meg a szálat egy egyenes vonallal, utána jöhetnek a pöttyök.</p></details>
+</article>
+<article class="kartya" id="f6">
+  <div class="fej"><span class="szam">6.</span><h2>Kerítés</h2><span class="szint sz2" title="Közepes">★★☆</span></div>
+  <div class="vaszon"><svg class="kep" xmlns="http://www.w3.org/2000/svg" viewBox="-234.0 -175.7 453.0 189.7" role="img">
+<rect x="-234.0" y="-175.7" width="453.0" height="189.7" fill="white"/>
+<polygon points="-220.0,0.0 -195.0,-0.0 -195.0,-140.0 -207.5,-161.7 -220.0,-140.0 -220.0,-0.0" fill="saddlebrown"/>
+<polyline points="-220.0,0.0 -195.0,-0.0 -195.0,-140.0 -207.5,-161.7 -220.0,-140.0 -220.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-180.0,0.0 -155.0,-0.0 -155.0,-100.0 -167.5,-121.7 -180.0,-100.0 -180.0,-0.0" fill="burlywood"/>
+<polyline points="-180.0,0.0 -155.0,-0.0 -155.0,-100.0 -167.5,-121.7 -180.0,-100.0 -180.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-140.0,0.0 -115.0,-0.0 -115.0,-100.0 -127.5,-121.7 -140.0,-100.0 -140.0,-0.0" fill="burlywood"/>
+<polyline points="-140.0,0.0 -115.0,-0.0 -115.0,-100.0 -127.5,-121.7 -140.0,-100.0 -140.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-100.0,0.0 -75.0,-0.0 -75.0,-100.0 -87.5,-121.7 -100.0,-100.0 -100.0,-0.0" fill="burlywood"/>
+<polyline points="-100.0,0.0 -75.0,-0.0 -75.0,-100.0 -87.5,-121.7 -100.0,-100.0 -100.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-60.0,0.0 -35.0,-0.0 -35.0,-100.0 -47.5,-121.7 -60.0,-100.0 -60.0,-0.0" fill="burlywood"/>
+<polyline points="-60.0,0.0 -35.0,-0.0 -35.0,-100.0 -47.5,-121.7 -60.0,-100.0 -60.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-20.0,0.0 5.0,-0.0 5.0,-140.0 -7.5,-161.7 -20.0,-140.0 -20.0,-0.0" fill="saddlebrown"/>
+<polyline points="-20.0,0.0 5.0,-0.0 5.0,-140.0 -7.5,-161.7 -20.0,-140.0 -20.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="20.0,0.0 45.0,-0.0 45.0,-100.0 32.5,-121.7 20.0,-100.0 20.0,-0.0" fill="burlywood"/>
+<polyline points="20.0,0.0 45.0,-0.0 45.0,-100.0 32.5,-121.7 20.0,-100.0 20.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="60.0,0.0 85.0,-0.0 85.0,-100.0 72.5,-121.7 60.0,-100.0 60.0,-0.0" fill="burlywood"/>
+<polyline points="60.0,0.0 85.0,-0.0 85.0,-100.0 72.5,-121.7 60.0,-100.0 60.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="100.0,0.0 125.0,-0.0 125.0,-100.0 112.5,-121.7 100.0,-100.0 100.0,-0.0" fill="burlywood"/>
+<polyline points="100.0,0.0 125.0,-0.0 125.0,-100.0 112.5,-121.7 100.0,-100.0 100.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="140.0,0.0 165.0,-0.0 165.0,-100.0 152.5,-121.7 140.0,-100.0 140.0,-0.0" fill="burlywood"/>
+<polyline points="140.0,0.0 165.0,-0.0 165.0,-100.0 152.5,-121.7 140.0,-100.0 140.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="180.0,0.0 205.0,-0.0 205.0,-140.0 192.5,-161.7 180.0,-140.0 180.0,-0.0" fill="saddlebrown"/>
+<polyline points="180.0,0.0 205.0,-0.0 205.0,-140.0 192.5,-161.7 180.0,-140.0 180.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+</svg></div>
+  <p>Hegyes tetejű lécek. Minden ötödik léc magasabb és sötétebb.</p>
+  <details><summary>Tipp</summary><p>i % 5 == 0 igaz, ha i osztható 5-tel. Egy léc: téglalap, a tetején egy kis háromszög.</p></details>
+</article>
+<article class="kartya" id="f7">
+  <div class="fej"><span class="szam">7.</span><h2>Hullám</h2><span class="szint sz2" title="Közepes">★★☆</span></div>
+  <div class="vaszon"><svg class="kep" xmlns="http://www.w3.org/2000/svg" viewBox="-254.0 -34.0 508.0 68.0" role="img">
+<rect x="-254.0" y="-34.0" width="508.0" height="68.0" fill="white"/>
+<polyline points="-240.0,0.0 -240.0,-1.0 -239.9,-2.1 -239.8,-3.1 -239.6,-4.2 -239.3,-5.2 -239.0,-6.2 -238.7,-7.2 -238.3,-8.1 -237.8,-9.1 -237.3,-10.0 -236.8,-10.9 -236.2,-11.8 -235.5,-12.6 -234.9,-13.4 -234.1,-14.1 -233.4,-14.9 -232.6,-15.5 -231.8,-16.2 -230.9,-16.8 -230.0,-17.3 -229.1,-17.8 -228.1,-18.3 -227.2,-18.7 -226.2,-19.0 -225.2,-19.3 -224.2,-19.6 -223.1,-19.8 -222.1,-19.9 -221.0,-20.0 -220.0,-20.0 -219.0,-20.0 -217.9,-19.9 -216.9,-19.8 -215.8,-19.6 -214.8,-19.3 -213.8,-19.0 -212.8,-18.7 -211.9,-18.3 -210.9,-17.8 -210.0,-17.3 -209.1,-16.8 -208.2,-16.2 -207.4,-15.5 -206.6,-14.9 -205.9,-14.1 -205.1,-13.4 -204.5,-12.6 -203.8,-11.8 -203.2,-10.9 -202.7,-10.0 -202.2,-9.1 -201.7,-8.1 -201.3,-7.2 -201.0,-6.2 -200.7,-5.2 -200.4,-4.2 -200.2,-3.1 -200.1,-2.1 -200.0,-1.0 -200.0,0.0" fill="none" stroke="blue" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-200.0,0.0 -200.0,1.0 -199.9,2.1 -199.8,3.1 -199.6,4.2 -199.3,5.2 -199.0,6.2 -198.7,7.2 -198.3,8.1 -197.8,9.1 -197.3,10.0 -196.8,10.9 -196.2,11.8 -195.5,12.6 -194.9,13.4 -194.1,14.1 -193.4,14.9 -192.6,15.5 -191.8,16.2 -190.9,16.8 -190.0,17.3 -189.1,17.8 -188.1,18.3 -187.2,18.7 -186.2,19.0 -185.2,19.3 -184.2,19.6 -183.1,19.8 -182.1,19.9 -181.0,20.0 -180.0,20.0 -179.0,20.0 -177.9,19.9 -176.9,19.8 -175.8,19.6 -174.8,19.3 -173.8,19.0 -172.8,18.7 -171.9,18.3 -170.9,17.8 -170.0,17.3 -169.1,16.8 -168.2,16.2 -167.4,15.5 -166.6,14.9 -165.9,14.1 -165.1,13.4 -164.5,12.6 -163.8,11.8 -163.2,10.9 -162.7,10.0 -162.2,9.1 -161.7,8.1 -161.3,7.2 -161.0,6.2 -160.7,5.2 -160.4,4.2 -160.2,3.1 -160.1,2.1 -160.0,1.0 -160.0,0.0" fill="none" stroke="green" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-160.0,0.0 -160.0,-1.0 -159.9,-2.1 -159.8,-3.1 -159.6,-4.2 -159.3,-5.2 -159.0,-6.2 -158.7,-7.2 -158.3,-8.1 -157.8,-9.1 -157.3,-10.0 -156.8,-10.9 -156.2,-11.8 -155.5,-12.6 -154.9,-13.4 -154.1,-14.1 -153.4,-14.9 -152.6,-15.5 -151.8,-16.2 -150.9,-16.8 -150.0,-17.3 -149.1,-17.8 -148.1,-18.3 -147.2,-18.7 -146.2,-19.0 -145.2,-19.3 -144.2,-19.6 -143.1,-19.8 -142.1,-19.9 -141.0,-20.0 -140.0,-20.0 -139.0,-20.0 -137.9,-19.9 -136.9,-19.8 -135.8,-19.6 -134.8,-19.3 -133.8,-19.0 -132.8,-18.7 -131.9,-18.3 -130.9,-17.8 -130.0,-17.3 -129.1,-16.8 -128.2,-16.2 -127.4,-15.5 -126.6,-14.9 -125.9,-14.1 -125.1,-13.4 -124.5,-12.6 -123.8,-11.8 -123.2,-10.9 -122.7,-10.0 -122.2,-9.1 -121.7,-8.1 -121.3,-7.2 -121.0,-6.2 -120.7,-5.2 -120.4,-4.2 -120.2,-3.1 -120.1,-2.1 -120.0,-1.0 -120.0,0.0" fill="none" stroke="blue" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-120.0,0.0 -120.0,1.0 -119.9,2.1 -119.8,3.1 -119.6,4.2 -119.3,5.2 -119.0,6.2 -118.7,7.2 -118.3,8.1 -117.8,9.1 -117.3,10.0 -116.8,10.9 -116.2,11.8 -115.5,12.6 -114.9,13.4 -114.1,14.1 -113.4,14.9 -112.6,15.5 -111.8,16.2 -110.9,16.8 -110.0,17.3 -109.1,17.8 -108.1,18.3 -107.2,18.7 -106.2,19.0 -105.2,19.3 -104.2,19.6 -103.1,19.8 -102.1,19.9 -101.0,20.0 -100.0,20.0 -99.0,20.0 -97.9,19.9 -96.9,19.8 -95.8,19.6 -94.8,19.3 -93.8,19.0 -92.8,18.7 -91.9,18.3 -90.9,17.8 -90.0,17.3 -89.1,16.8 -88.2,16.2 -87.4,15.5 -86.6,14.9 -85.9,14.1 -85.1,13.4 -84.5,12.6 -83.8,11.8 -83.2,10.9 -82.7,10.0 -82.2,9.1 -81.7,8.1 -81.3,7.2 -81.0,6.2 -80.7,5.2 -80.4,4.2 -80.2,3.1 -80.1,2.1 -80.0,1.0 -80.0,0.0" fill="none" stroke="green" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-80.0,0.0 -80.0,-1.0 -79.9,-2.1 -79.8,-3.1 -79.6,-4.2 -79.3,-5.2 -79.0,-6.2 -78.7,-7.2 -78.3,-8.1 -77.8,-9.1 -77.3,-10.0 -76.8,-10.9 -76.2,-11.8 -75.5,-12.6 -74.9,-13.4 -74.1,-14.1 -73.4,-14.9 -72.6,-15.5 -71.8,-16.2 -70.9,-16.8 -70.0,-17.3 -69.1,-17.8 -68.1,-18.3 -67.2,-18.7 -66.2,-19.0 -65.2,-19.3 -64.2,-19.6 -63.1,-19.8 -62.1,-19.9 -61.0,-20.0 -60.0,-20.0 -59.0,-20.0 -57.9,-19.9 -56.9,-19.8 -55.8,-19.6 -54.8,-19.3 -53.8,-19.0 -52.8,-18.7 -51.9,-18.3 -50.9,-17.8 -50.0,-17.3 -49.1,-16.8 -48.2,-16.2 -47.4,-15.5 -46.6,-14.9 -45.9,-14.1 -45.1,-13.4 -44.5,-12.6 -43.8,-11.8 -43.2,-10.9 -42.7,-10.0 -42.2,-9.1 -41.7,-8.1 -41.3,-7.2 -41.0,-6.2 -40.7,-5.2 -40.4,-4.2 -40.2,-3.1 -40.1,-2.1 -40.0,-1.0 -40.0,0.0" fill="none" stroke="blue" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-40.0,0.0 -40.0,1.0 -39.9,2.1 -39.8,3.1 -39.6,4.2 -39.3,5.2 -39.0,6.2 -38.7,7.2 -38.3,8.1 -37.8,9.1 -37.3,10.0 -36.8,10.9 -36.2,11.8 -35.5,12.6 -34.9,13.4 -34.1,14.1 -33.4,14.9 -32.6,15.5 -31.8,16.2 -30.9,16.8 -30.0,17.3 -29.1,17.8 -28.1,18.3 -27.2,18.7 -26.2,19.0 -25.2,19.3 -24.2,19.6 -23.1,19.8 -22.1,19.9 -21.0,20.0 -20.0,20.0 -19.0,20.0 -17.9,19.9 -16.9,19.8 -15.8,19.6 -14.8,19.3 -13.8,19.0 -12.8,18.7 -11.9,18.3 -10.9,17.8 -10.0,17.3 -9.1,16.8 -8.2,16.2 -7.4,15.5 -6.6,14.9 -5.9,14.1 -5.1,13.4 -4.5,12.6 -3.8,11.8 -3.2,10.9 -2.7,10.0 -2.2,9.1 -1.7,8.1 -1.3,7.2 -1.0,6.2 -0.7,5.2 -0.4,4.2 -0.2,3.1 -0.1,2.1 -0.0,1.0 -0.0,0.0" fill="none" stroke="green" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,0.0 0.0,-1.0 0.1,-2.1 0.2,-3.1 0.4,-4.2 0.7,-5.2 1.0,-6.2 1.3,-7.2 1.7,-8.1 2.2,-9.1 2.7,-10.0 3.2,-10.9 3.8,-11.8 4.5,-12.6 5.1,-13.4 5.9,-14.1 6.6,-14.9 7.4,-15.5 8.2,-16.2 9.1,-16.8 10.0,-17.3 10.9,-17.8 11.9,-18.3 12.8,-18.7 13.8,-19.0 14.8,-19.3 15.8,-19.6 16.9,-19.8 17.9,-19.9 19.0,-20.0 20.0,-20.0 21.0,-20.0 22.1,-19.9 23.1,-19.8 24.2,-19.6 25.2,-19.3 26.2,-19.0 27.2,-18.7 28.1,-18.3 29.1,-17.8 30.0,-17.3 30.9,-16.8 31.8,-16.2 32.6,-15.5 33.4,-14.9 34.1,-14.1 34.9,-13.4 35.5,-12.6 36.2,-11.8 36.8,-10.9 37.3,-10.0 37.8,-9.1 38.3,-8.1 38.7,-7.2 39.0,-6.2 39.3,-5.2 39.6,-4.2 39.8,-3.1 39.9,-2.1 40.0,-1.0 40.0,0.0" fill="none" stroke="blue" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="40.0,0.0 40.0,1.0 40.1,2.1 40.2,3.1 40.4,4.2 40.7,5.2 41.0,6.2 41.3,7.2 41.7,8.1 42.2,9.1 42.7,10.0 43.2,10.9 43.8,11.8 44.5,12.6 45.1,13.4 45.9,14.1 46.6,14.9 47.4,15.5 48.2,16.2 49.1,16.8 50.0,17.3 50.9,17.8 51.9,18.3 52.8,18.7 53.8,19.0 54.8,19.3 55.8,19.6 56.9,19.8 57.9,19.9 59.0,20.0 60.0,20.0 61.0,20.0 62.1,19.9 63.1,19.8 64.2,19.6 65.2,19.3 66.2,19.0 67.2,18.7 68.1,18.3 69.1,17.8 70.0,17.3 70.9,16.8 71.8,16.2 72.6,15.5 73.4,14.9 74.1,14.1 74.9,13.4 75.5,12.6 76.2,11.8 76.8,10.9 77.3,10.0 77.8,9.1 78.3,8.1 78.7,7.2 79.0,6.2 79.3,5.2 79.6,4.2 79.8,3.1 79.9,2.1 80.0,1.0 80.0,0.0" fill="none" stroke="green" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="80.0,0.0 80.0,-1.0 80.1,-2.1 80.2,-3.1 80.4,-4.2 80.7,-5.2 81.0,-6.2 81.3,-7.2 81.7,-8.1 82.2,-9.1 82.7,-10.0 83.2,-10.9 83.8,-11.8 84.5,-12.6 85.1,-13.4 85.9,-14.1 86.6,-14.9 87.4,-15.5 88.2,-16.2 89.1,-16.8 90.0,-17.3 90.9,-17.8 91.9,-18.3 92.8,-18.7 93.8,-19.0 94.8,-19.3 95.8,-19.6 96.9,-19.8 97.9,-19.9 99.0,-20.0 100.0,-20.0 101.0,-20.0 102.1,-19.9 103.1,-19.8 104.2,-19.6 105.2,-19.3 106.2,-19.0 107.2,-18.7 108.1,-18.3 109.1,-17.8 110.0,-17.3 110.9,-16.8 111.8,-16.2 112.6,-15.5 113.4,-14.9 114.1,-14.1 114.9,-13.4 115.5,-12.6 116.2,-11.8 116.8,-10.9 117.3,-10.0 117.8,-9.1 118.3,-8.1 118.7,-7.2 119.0,-6.2 119.3,-5.2 119.6,-4.2 119.8,-3.1 119.9,-2.1 120.0,-1.0 120.0,0.0" fill="none" stroke="blue" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="120.0,0.0 120.0,1.0 120.1,2.1 120.2,3.1 120.4,4.2 120.7,5.2 121.0,6.2 121.3,7.2 121.7,8.1 122.2,9.1 122.7,10.0 123.2,10.9 123.8,11.8 124.5,12.6 125.1,13.4 125.9,14.1 126.6,14.9 127.4,15.5 128.2,16.2 129.1,16.8 130.0,17.3 130.9,17.8 131.9,18.3 132.8,18.7 133.8,19.0 134.8,19.3 135.8,19.6 136.9,19.8 137.9,19.9 139.0,20.0 140.0,20.0 141.0,20.0 142.1,19.9 143.1,19.8 144.2,19.6 145.2,19.3 146.2,19.0 147.2,18.7 148.1,18.3 149.1,17.8 150.0,17.3 150.9,16.8 151.8,16.2 152.6,15.5 153.4,14.9 154.1,14.1 154.9,13.4 155.5,12.6 156.2,11.8 156.8,10.9 157.3,10.0 157.8,9.1 158.3,8.1 158.7,7.2 159.0,6.2 159.3,5.2 159.6,4.2 159.8,3.1 159.9,2.1 160.0,1.0 160.0,0.0" fill="none" stroke="green" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="160.0,0.0 160.0,-1.0 160.1,-2.1 160.2,-3.1 160.4,-4.2 160.7,-5.2 161.0,-6.2 161.3,-7.2 161.7,-8.1 162.2,-9.1 162.7,-10.0 163.2,-10.9 163.8,-11.8 164.5,-12.6 165.1,-13.4 165.9,-14.1 166.6,-14.9 167.4,-15.5 168.2,-16.2 169.1,-16.8 170.0,-17.3 170.9,-17.8 171.9,-18.3 172.8,-18.7 173.8,-19.0 174.8,-19.3 175.8,-19.6 176.9,-19.8 177.9,-19.9 179.0,-20.0 180.0,-20.0 181.0,-20.0 182.1,-19.9 183.1,-19.8 184.2,-19.6 185.2,-19.3 186.2,-19.0 187.2,-18.7 188.1,-18.3 189.1,-17.8 190.0,-17.3 190.9,-16.8 191.8,-16.2 192.6,-15.5 193.4,-14.9 194.1,-14.1 194.9,-13.4 195.5,-12.6 196.2,-11.8 196.8,-10.9 197.3,-10.0 197.8,-9.1 198.3,-8.1 198.7,-7.2 199.0,-6.2 199.3,-5.2 199.6,-4.2 199.8,-3.1 199.9,-2.1 200.0,-1.0 200.0,0.0" fill="none" stroke="blue" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="200.0,0.0 200.0,1.0 200.1,2.1 200.2,3.1 200.4,4.2 200.7,5.2 201.0,6.2 201.3,7.2 201.7,8.1 202.2,9.1 202.7,10.0 203.2,10.9 203.8,11.8 204.5,12.6 205.1,13.4 205.9,14.1 206.6,14.9 207.4,15.5 208.2,16.2 209.1,16.8 210.0,17.3 210.9,17.8 211.9,18.3 212.8,18.7 213.8,19.0 214.8,19.3 215.8,19.6 216.9,19.8 217.9,19.9 219.0,20.0 220.0,20.0 221.0,20.0 222.1,19.9 223.1,19.8 224.2,19.6 225.2,19.3 226.2,19.0 227.2,18.7 228.1,18.3 229.1,17.8 230.0,17.3 230.9,16.8 231.8,16.2 232.6,15.5 233.4,14.9 234.1,14.1 234.9,13.4 235.5,12.6 236.2,11.8 236.8,10.9 237.3,10.0 237.8,9.1 238.3,8.1 238.7,7.2 239.0,6.2 239.3,5.2 239.6,4.2 239.8,3.1 239.9,2.1 240.0,1.0 240.0,0.0" fill="none" stroke="green" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+</svg></div>
+  <p>Félkörökből álló hullám: felváltva egy domb (kék) és egy völgy (zöld).</p>
+  <details><summary>Tipp</summary><p>circle(20, 180) fél kört rajzol. Ha a sugár negatív, circle(-20, 180), akkor a másik irányba kanyarodik.</p></details>
+</article>
+<article class="kartya" id="f8">
+  <div class="fej"><span class="szam">8.</span><h2>Oszlopdiagram</h2><span class="szint sz2" title="Közepes">★★☆</span></div>
+  <div class="vaszon"><svg class="kep" xmlns="http://www.w3.org/2000/svg" viewBox="-194.0 -194.0 378.0 208.0" role="img">
+<rect x="-194.0" y="-194.0" width="378.0" height="208.0" fill="white"/>
+<polygon points="-180.0,0.0 -150.0,-0.0 -150.0,-60.0 -180.0,-60.0 -180.0,-0.0" fill="limegreen"/>
+<polyline points="-180.0,0.0 -150.0,-0.0 -150.0,-60.0 -180.0,-60.0 -180.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-140.0,0.0 -110.0,-0.0 -110.0,-140.0 -140.0,-140.0 -140.0,-0.0" fill="red"/>
+<polyline points="-140.0,0.0 -110.0,-0.0 -110.0,-140.0 -140.0,-140.0 -140.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-100.0,0.0 -70.0,-0.0 -70.0,-40.0 -100.0,-40.0 -100.0,-0.0" fill="limegreen"/>
+<polyline points="-100.0,0.0 -70.0,-0.0 -70.0,-40.0 -100.0,-40.0 -100.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-60.0,0.0 -30.0,-0.0 -30.0,-160.0 -60.0,-160.0 -60.0,-0.0" fill="red"/>
+<polyline points="-60.0,0.0 -30.0,-0.0 -30.0,-160.0 -60.0,-160.0 -60.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-20.0,0.0 10.0,-0.0 10.0,-100.0 -20.0,-100.0 -20.0,-0.0" fill="orange"/>
+<polyline points="-20.0,0.0 10.0,-0.0 10.0,-100.0 -20.0,-100.0 -20.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="20.0,0.0 50.0,-0.0 50.0,-180.0 20.0,-180.0 20.0,-0.0" fill="red"/>
+<polyline points="20.0,0.0 50.0,-0.0 50.0,-180.0 20.0,-180.0 20.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="60.0,0.0 90.0,-0.0 90.0,-80.0 60.0,-80.0 60.0,-0.0" fill="orange"/>
+<polyline points="60.0,0.0 90.0,-0.0 90.0,-80.0 60.0,-80.0 60.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="100.0,0.0 130.0,-0.0 130.0,-120.0 100.0,-120.0 100.0,-0.0" fill="orange"/>
+<polyline points="100.0,0.0 130.0,-0.0 130.0,-120.0 100.0,-120.0 100.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="140.0,0.0 170.0,-0.0 170.0,-20.0 140.0,-20.0 140.0,-0.0" fill="limegreen"/>
+<polyline points="140.0,0.0 170.0,-0.0 170.0,-20.0 140.0,-20.0 140.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+</svg></div>
+  <p>Oszlopok egy lista alapján. Ha kicsi a szám: zöld, ha közepes: narancs, ha nagy: piros.</p>
+  <details><summary>Tipp</summary><p>magassagok = [3, 7, 2, 8, 5, 9, 4, 6, 1]. Kisebb mint 4: zöld. Kisebb mint 7: narancs. Különben piros.</p></details>
+</article>
+<article class="kartya" id="f9">
+  <div class="fej"><span class="szam">9.</span><h2>Csempesor</h2><span class="szint sz2" title="Közepes">★★☆</span></div>
+  <div class="vaszon"><svg class="kep" xmlns="http://www.w3.org/2000/svg" viewBox="-214.0 -64.0 428.0 78.0" role="img">
+<rect x="-214.0" y="-64.0" width="428.0" height="78.0" fill="white"/>
+<polygon points="-200.0,0.0 -150.0,0.0 -150.0,-50.0 -200.0,0.0" fill="navy"/>
+<polyline points="-200.0,0.0 -150.0,0.0 -150.0,-50.0 -200.0,0.0" fill="none" stroke="navy" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-200.0,0.0 -150.0,-0.0 -150.0,-50.0 -200.0,-50.0 -200.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-150.0,0.0 -100.0,0.0 -150.0,-50.0 -150.0,0.0" fill="navy"/>
+<polyline points="-150.0,0.0 -100.0,0.0 -150.0,-50.0 -150.0,0.0" fill="none" stroke="navy" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-150.0,0.0 -100.0,-0.0 -100.0,-50.0 -150.0,-50.0 -150.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-100.0,0.0 -50.0,0.0 -50.0,-50.0 -100.0,0.0" fill="navy"/>
+<polyline points="-100.0,0.0 -50.0,0.0 -50.0,-50.0 -100.0,0.0" fill="none" stroke="navy" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-100.0,0.0 -50.0,-0.0 -50.0,-50.0 -100.0,-50.0 -100.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-50.0,0.0 0.0,0.0 -50.0,-50.0 -50.0,0.0" fill="navy"/>
+<polyline points="-50.0,0.0 0.0,0.0 -50.0,-50.0 -50.0,0.0" fill="none" stroke="navy" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-50.0,0.0 0.0,-0.0 0.0,-50.0 -50.0,-50.0 -50.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="0.0,0.0 50.0,0.0 50.0,-50.0 0.0,0.0" fill="navy"/>
+<polyline points="0.0,0.0 50.0,0.0 50.0,-50.0 0.0,0.0" fill="none" stroke="navy" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="0.0,0.0 50.0,-0.0 50.0,-50.0 0.0,-50.0 -0.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="50.0,0.0 100.0,0.0 50.0,-50.0 50.0,0.0" fill="navy"/>
+<polyline points="50.0,0.0 100.0,0.0 50.0,-50.0 50.0,0.0" fill="none" stroke="navy" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="50.0,0.0 100.0,-0.0 100.0,-50.0 50.0,-50.0 50.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="100.0,0.0 150.0,0.0 150.0,-50.0 100.0,0.0" fill="navy"/>
+<polyline points="100.0,0.0 150.0,0.0 150.0,-50.0 100.0,0.0" fill="none" stroke="navy" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="100.0,0.0 150.0,-0.0 150.0,-50.0 100.0,-50.0 100.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="150.0,0.0 200.0,0.0 150.0,-50.0 150.0,0.0" fill="navy"/>
+<polyline points="150.0,0.0 200.0,0.0 150.0,-50.0 150.0,0.0" fill="none" stroke="navy" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="150.0,0.0 200.0,-0.0 200.0,-50.0 150.0,-50.0 150.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+</svg></div>
+  <p>Nyolc négyzet alakú csempe. Mindegyiknek az egyik fele sötétkék, de felváltva a másik sarokban.</p>
+  <details><summary>Tipp</summary><p>A kék fél egy háromszög. A három csúcsához menj goto()-val. Páros i-nél a jobb felső, páratlannál a bal felső sarok kell.</p></details>
+</article>
+<article class="kartya" id="f10">
+  <div class="fej"><span class="szam">10.</span><h2>Karkötő</h2><span class="szint sz3" title="Nehéz">★★★</span></div>
+  <div class="vaszon"><svg class="kep" xmlns="http://www.w3.org/2000/svg" viewBox="-131.5 -131.5 263.0 263.0" role="img">
+<rect x="-131.5" y="-131.5" width="263.0" height="263.0" fill="white"/>
+<polyline points="0.0,100.0 5.2,99.9 10.5,99.5 15.6,98.8 20.8,97.8 25.9,96.6 30.9,95.1 35.8,93.4 40.7,91.4 45.4,89.1 50.0,86.6 54.5,83.9 58.8,80.9 62.9,77.7 66.9,74.3 70.7,70.7 74.3,66.9 77.7,62.9 80.9,58.8 83.9,54.5 86.6,50.0 89.1,45.4 91.4,40.7 93.4,35.8 95.1,30.9 96.6,25.9 97.8,20.8 98.8,15.6 99.5,10.5 99.9,5.2 100.0,0.0 99.9,-5.2 99.5,-10.5 98.8,-15.6 97.8,-20.8 96.6,-25.9 95.1,-30.9 93.4,-35.8 91.4,-40.7 89.1,-45.4 86.6,-50.0 83.9,-54.5 80.9,-58.8 77.7,-62.9 74.3,-66.9 70.7,-70.7 66.9,-74.3 62.9,-77.7 58.8,-80.9 54.5,-83.9 50.0,-86.6 45.4,-89.1 40.7,-91.4 35.8,-93.4 30.9,-95.1 25.9,-96.6 20.8,-97.8 15.6,-98.8 10.5,-99.5 5.2,-99.9 0.0,-100.0 -5.2,-99.9 -10.5,-99.5 -15.6,-98.8 -20.8,-97.8 -25.9,-96.6 -30.9,-95.1 -35.8,-93.4 -40.7,-91.4 -45.4,-89.1 -50.0,-86.6 -54.5,-83.9 -58.8,-80.9 -62.9,-77.7 -66.9,-74.3 -70.7,-70.7 -74.3,-66.9 -77.7,-62.9 -80.9,-58.8 -83.9,-54.5 -86.6,-50.0 -89.1,-45.4 -91.4,-40.7 -93.4,-35.8 -95.1,-30.9 -96.6,-25.9 -97.8,-20.8 -98.8,-15.6 -99.5,-10.5 -99.9,-5.2 -100.0,-0.0 -99.9,5.2 -99.5,10.5 -98.8,15.6 -97.8,20.8 -96.6,25.9 -95.1,30.9 -93.4,35.8 -91.4,40.7 -89.1,45.4 -86.6,50.0 -83.9,54.5 -80.9,58.8 -77.7,62.9 -74.3,66.9 -70.7,70.7 -66.9,74.3 -62.9,77.7 -58.8,80.9 -54.5,83.9 -50.0,86.6 -45.4,89.1 -40.7,91.4 -35.8,93.4 -30.9,95.1 -25.9,96.6 -20.8,97.8 -15.6,98.8 -10.5,99.5 -5.2,99.9 0.0,100.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="100.0" cy="-0.0" r="17.5" fill="red"/>
+<circle cx="86.6" cy="-50.0" r="9.0" fill="blue"/>
+<circle cx="50.0" cy="-86.6" r="9.0" fill="blue"/>
+<circle cx="0.0" cy="-100.0" r="17.5" fill="red"/>
+<circle cx="-50.0" cy="-86.6" r="9.0" fill="blue"/>
+<circle cx="-86.6" cy="-50.0" r="9.0" fill="blue"/>
+<circle cx="-100.0" cy="-0.0" r="17.5" fill="red"/>
+<circle cx="-86.6" cy="50.0" r="9.0" fill="blue"/>
+<circle cx="-50.0" cy="86.6" r="9.0" fill="blue"/>
+<circle cx="-0.0" cy="100.0" r="17.5" fill="red"/>
+<circle cx="50.0" cy="86.6" r="9.0" fill="blue"/>
+<circle cx="86.6" cy="50.0" r="9.0" fill="blue"/>
+</svg></div>
+  <p>Tizenkét gyöngy körben. Minden harmadik nagy és piros, a többi kicsi és kék.</p>
+  <details><summary>Tipp</summary><p>Mindig a középből indulj: goto(0, 0), setheading(i * 30), aztán előre 100.</p></details>
+</article>
+<article class="kartya" id="f11">
+  <div class="fej"><span class="szam">11.</span><h2>Szőnyeg</h2><span class="szint sz3" title="Nehéz">★★★</span></div>
+  <div class="vaszon"><svg class="kep" xmlns="http://www.w3.org/2000/svg" viewBox="-119.0 -119.0 238.0 238.0" role="img">
+<rect x="-119.0" y="-119.0" width="238.0" height="238.0" fill="white"/>
+<polygon points="-105.0,105.0 -75.0,105.0 -75.0,75.0 -105.0,75.0 -105.0,105.0" fill="red"/>
+<polyline points="-105.0,105.0 -75.0,105.0 -75.0,75.0 -105.0,75.0 -105.0,105.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-75.0,105.0 -45.0,105.0 -45.0,75.0 -75.0,75.0 -75.0,105.0" fill="royalblue"/>
+<polyline points="-75.0,105.0 -45.0,105.0 -45.0,75.0 -75.0,75.0 -75.0,105.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-45.0,105.0 -15.0,105.0 -15.0,75.0 -45.0,75.0 -45.0,105.0" fill="royalblue"/>
+<polyline points="-45.0,105.0 -15.0,105.0 -15.0,75.0 -45.0,75.0 -45.0,105.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-15.0,105.0 15.0,105.0 15.0,75.0 -15.0,75.0 -15.0,105.0" fill="royalblue"/>
+<polyline points="-15.0,105.0 15.0,105.0 15.0,75.0 -15.0,75.0 -15.0,105.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="15.0,105.0 45.0,105.0 45.0,75.0 15.0,75.0 15.0,105.0" fill="royalblue"/>
+<polyline points="15.0,105.0 45.0,105.0 45.0,75.0 15.0,75.0 15.0,105.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="45.0,105.0 75.0,105.0 75.0,75.0 45.0,75.0 45.0,105.0" fill="royalblue"/>
+<polyline points="45.0,105.0 75.0,105.0 75.0,75.0 45.0,75.0 45.0,105.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="75.0,105.0 105.0,105.0 105.0,75.0 75.0,75.0 75.0,105.0" fill="red"/>
+<polyline points="75.0,105.0 105.0,105.0 105.0,75.0 75.0,75.0 75.0,105.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-105.0,75.0 -75.0,75.0 -75.0,45.0 -105.0,45.0 -105.0,75.0" fill="royalblue"/>
+<polyline points="-105.0,75.0 -75.0,75.0 -75.0,45.0 -105.0,45.0 -105.0,75.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-75.0,75.0 -45.0,75.0 -45.0,45.0 -75.0,45.0 -75.0,75.0" fill="red"/>
+<polyline points="-75.0,75.0 -45.0,75.0 -45.0,45.0 -75.0,45.0 -75.0,75.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-45.0,75.0 -15.0,75.0 -15.0,45.0 -45.0,45.0 -45.0,75.0" fill="lightyellow"/>
+<polyline points="-45.0,75.0 -15.0,75.0 -15.0,45.0 -45.0,45.0 -45.0,75.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-15.0,75.0 15.0,75.0 15.0,45.0 -15.0,45.0 -15.0,75.0" fill="lightyellow"/>
+<polyline points="-15.0,75.0 15.0,75.0 15.0,45.0 -15.0,45.0 -15.0,75.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="15.0,75.0 45.0,75.0 45.0,45.0 15.0,45.0 15.0,75.0" fill="lightyellow"/>
+<polyline points="15.0,75.0 45.0,75.0 45.0,45.0 15.0,45.0 15.0,75.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="45.0,75.0 75.0,75.0 75.0,45.0 45.0,45.0 45.0,75.0" fill="red"/>
+<polyline points="45.0,75.0 75.0,75.0 75.0,45.0 45.0,45.0 45.0,75.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="75.0,75.0 105.0,75.0 105.0,45.0 75.0,45.0 75.0,75.0" fill="royalblue"/>
+<polyline points="75.0,75.0 105.0,75.0 105.0,45.0 75.0,45.0 75.0,75.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-105.0,45.0 -75.0,45.0 -75.0,15.0 -105.0,15.0 -105.0,45.0" fill="royalblue"/>
+<polyline points="-105.0,45.0 -75.0,45.0 -75.0,15.0 -105.0,15.0 -105.0,45.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-75.0,45.0 -45.0,45.0 -45.0,15.0 -75.0,15.0 -75.0,45.0" fill="lightyellow"/>
+<polyline points="-75.0,45.0 -45.0,45.0 -45.0,15.0 -75.0,15.0 -75.0,45.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-45.0,45.0 -15.0,45.0 -15.0,15.0 -45.0,15.0 -45.0,45.0" fill="red"/>
+<polyline points="-45.0,45.0 -15.0,45.0 -15.0,15.0 -45.0,15.0 -45.0,45.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-15.0,45.0 15.0,45.0 15.0,15.0 -15.0,15.0 -15.0,45.0" fill="lightyellow"/>
+<polyline points="-15.0,45.0 15.0,45.0 15.0,15.0 -15.0,15.0 -15.0,45.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="15.0,45.0 45.0,45.0 45.0,15.0 15.0,15.0 15.0,45.0" fill="red"/>
+<polyline points="15.0,45.0 45.0,45.0 45.0,15.0 15.0,15.0 15.0,45.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="45.0,45.0 75.0,45.0 75.0,15.0 45.0,15.0 45.0,45.0" fill="lightyellow"/>
+<polyline points="45.0,45.0 75.0,45.0 75.0,15.0 45.0,15.0 45.0,45.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="75.0,45.0 105.0,45.0 105.0,15.0 75.0,15.0 75.0,45.0" fill="royalblue"/>
+<polyline points="75.0,45.0 105.0,45.0 105.0,15.0 75.0,15.0 75.0,45.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-105.0,15.0 -75.0,15.0 -75.0,-15.0 -105.0,-15.0 -105.0,15.0" fill="royalblue"/>
+<polyline points="-105.0,15.0 -75.0,15.0 -75.0,-15.0 -105.0,-15.0 -105.0,15.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-75.0,15.0 -45.0,15.0 -45.0,-15.0 -75.0,-15.0 -75.0,15.0" fill="lightyellow"/>
+<polyline points="-75.0,15.0 -45.0,15.0 -45.0,-15.0 -75.0,-15.0 -75.0,15.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-45.0,15.0 -15.0,15.0 -15.0,-15.0 -45.0,-15.0 -45.0,15.0" fill="lightyellow"/>
+<polyline points="-45.0,15.0 -15.0,15.0 -15.0,-15.0 -45.0,-15.0 -45.0,15.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-15.0,15.0 15.0,15.0 15.0,-15.0 -15.0,-15.0 -15.0,15.0" fill="red"/>
+<polyline points="-15.0,15.0 15.0,15.0 15.0,-15.0 -15.0,-15.0 -15.0,15.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="15.0,15.0 45.0,15.0 45.0,-15.0 15.0,-15.0 15.0,15.0" fill="lightyellow"/>
+<polyline points="15.0,15.0 45.0,15.0 45.0,-15.0 15.0,-15.0 15.0,15.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="45.0,15.0 75.0,15.0 75.0,-15.0 45.0,-15.0 45.0,15.0" fill="lightyellow"/>
+<polyline points="45.0,15.0 75.0,15.0 75.0,-15.0 45.0,-15.0 45.0,15.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="75.0,15.0 105.0,15.0 105.0,-15.0 75.0,-15.0 75.0,15.0" fill="royalblue"/>
+<polyline points="75.0,15.0 105.0,15.0 105.0,-15.0 75.0,-15.0 75.0,15.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-105.0,-15.0 -75.0,-15.0 -75.0,-45.0 -105.0,-45.0 -105.0,-15.0" fill="royalblue"/>
+<polyline points="-105.0,-15.0 -75.0,-15.0 -75.0,-45.0 -105.0,-45.0 -105.0,-15.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-75.0,-15.0 -45.0,-15.0 -45.0,-45.0 -75.0,-45.0 -75.0,-15.0" fill="lightyellow"/>
+<polyline points="-75.0,-15.0 -45.0,-15.0 -45.0,-45.0 -75.0,-45.0 -75.0,-15.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-45.0,-15.0 -15.0,-15.0 -15.0,-45.0 -45.0,-45.0 -45.0,-15.0" fill="red"/>
+<polyline points="-45.0,-15.0 -15.0,-15.0 -15.0,-45.0 -45.0,-45.0 -45.0,-15.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-15.0,-15.0 15.0,-15.0 15.0,-45.0 -15.0,-45.0 -15.0,-15.0" fill="lightyellow"/>
+<polyline points="-15.0,-15.0 15.0,-15.0 15.0,-45.0 -15.0,-45.0 -15.0,-15.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="15.0,-15.0 45.0,-15.0 45.0,-45.0 15.0,-45.0 15.0,-15.0" fill="red"/>
+<polyline points="15.0,-15.0 45.0,-15.0 45.0,-45.0 15.0,-45.0 15.0,-15.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="45.0,-15.0 75.0,-15.0 75.0,-45.0 45.0,-45.0 45.0,-15.0" fill="lightyellow"/>
+<polyline points="45.0,-15.0 75.0,-15.0 75.0,-45.0 45.0,-45.0 45.0,-15.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="75.0,-15.0 105.0,-15.0 105.0,-45.0 75.0,-45.0 75.0,-15.0" fill="royalblue"/>
+<polyline points="75.0,-15.0 105.0,-15.0 105.0,-45.0 75.0,-45.0 75.0,-15.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-105.0,-45.0 -75.0,-45.0 -75.0,-75.0 -105.0,-75.0 -105.0,-45.0" fill="royalblue"/>
+<polyline points="-105.0,-45.0 -75.0,-45.0 -75.0,-75.0 -105.0,-75.0 -105.0,-45.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-75.0,-45.0 -45.0,-45.0 -45.0,-75.0 -75.0,-75.0 -75.0,-45.0" fill="red"/>
+<polyline points="-75.0,-45.0 -45.0,-45.0 -45.0,-75.0 -75.0,-75.0 -75.0,-45.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-45.0,-45.0 -15.0,-45.0 -15.0,-75.0 -45.0,-75.0 -45.0,-45.0" fill="lightyellow"/>
+<polyline points="-45.0,-45.0 -15.0,-45.0 -15.0,-75.0 -45.0,-75.0 -45.0,-45.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-15.0,-45.0 15.0,-45.0 15.0,-75.0 -15.0,-75.0 -15.0,-45.0" fill="lightyellow"/>
+<polyline points="-15.0,-45.0 15.0,-45.0 15.0,-75.0 -15.0,-75.0 -15.0,-45.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="15.0,-45.0 45.0,-45.0 45.0,-75.0 15.0,-75.0 15.0,-45.0" fill="lightyellow"/>
+<polyline points="15.0,-45.0 45.0,-45.0 45.0,-75.0 15.0,-75.0 15.0,-45.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="45.0,-45.0 75.0,-45.0 75.0,-75.0 45.0,-75.0 45.0,-45.0" fill="red"/>
+<polyline points="45.0,-45.0 75.0,-45.0 75.0,-75.0 45.0,-75.0 45.0,-45.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="75.0,-45.0 105.0,-45.0 105.0,-75.0 75.0,-75.0 75.0,-45.0" fill="royalblue"/>
+<polyline points="75.0,-45.0 105.0,-45.0 105.0,-75.0 75.0,-75.0 75.0,-45.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-105.0,-75.0 -75.0,-75.0 -75.0,-105.0 -105.0,-105.0 -105.0,-75.0" fill="red"/>
+<polyline points="-105.0,-75.0 -75.0,-75.0 -75.0,-105.0 -105.0,-105.0 -105.0,-75.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-75.0,-75.0 -45.0,-75.0 -45.0,-105.0 -75.0,-105.0 -75.0,-75.0" fill="royalblue"/>
+<polyline points="-75.0,-75.0 -45.0,-75.0 -45.0,-105.0 -75.0,-105.0 -75.0,-75.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-45.0,-75.0 -15.0,-75.0 -15.0,-105.0 -45.0,-105.0 -45.0,-75.0" fill="royalblue"/>
+<polyline points="-45.0,-75.0 -15.0,-75.0 -15.0,-105.0 -45.0,-105.0 -45.0,-75.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-15.0,-75.0 15.0,-75.0 15.0,-105.0 -15.0,-105.0 -15.0,-75.0" fill="royalblue"/>
+<polyline points="-15.0,-75.0 15.0,-75.0 15.0,-105.0 -15.0,-105.0 -15.0,-75.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="15.0,-75.0 45.0,-75.0 45.0,-105.0 15.0,-105.0 15.0,-75.0" fill="royalblue"/>
+<polyline points="15.0,-75.0 45.0,-75.0 45.0,-105.0 15.0,-105.0 15.0,-75.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="45.0,-75.0 75.0,-75.0 75.0,-105.0 45.0,-105.0 45.0,-75.0" fill="royalblue"/>
+<polyline points="45.0,-75.0 75.0,-75.0 75.0,-105.0 45.0,-105.0 45.0,-75.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="75.0,-75.0 105.0,-75.0 105.0,-105.0 75.0,-105.0 75.0,-75.0" fill="red"/>
+<polyline points="75.0,-75.0 105.0,-75.0 105.0,-105.0 75.0,-105.0 75.0,-75.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+</svg></div>
+  <p>7×7-es szőnyeg: kék szél, piros X a közepén, a többi mező világossárga.</p>
+  <details><summary>Tipp</summary><p>Két ciklus: sor és oszlop. Az átló: sor == oszlop vagy sor + oszlop == 6. A szél: sor == 0 or sor == 6 or …</p></details>
+</article>
+<article class="kartya" id="f12">
+  <div class="fej"><span class="szam">12.</span><h2>Hímzés</h2><span class="szint sz3" title="Nehéz">★★★</span></div>
+  <div class="vaszon"><svg class="kep" xmlns="http://www.w3.org/2000/svg" viewBox="-234.0 -154.0 268.0 168.0" role="img">
+<rect x="-234.0" y="-154.0" width="268.0" height="168.0" fill="white"/>
+<polygon points="-220.0,0.0 -180.0,0.0 -200.0,-35.0 -220.0,0.0" fill="crimson"/>
+<polyline points="-220.0,0.0 -180.0,0.0 -200.0,-35.0 -220.0,0.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-200.0,-35.0 -160.0,-35.0 -180.0,0.0 -200.0,-35.0" fill="gold"/>
+<polyline points="-200.0,-35.0 -160.0,-35.0 -180.0,0.0 -200.0,-35.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-180.0,0.0 -140.0,0.0 -160.0,-35.0 -180.0,0.0" fill="teal"/>
+<polyline points="-180.0,0.0 -140.0,0.0 -160.0,-35.0 -180.0,0.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-160.0,-35.0 -120.0,-35.0 -140.0,0.0 -160.0,-35.0" fill="crimson"/>
+<polyline points="-160.0,-35.0 -120.0,-35.0 -140.0,0.0 -160.0,-35.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-140.0,0.0 -100.0,0.0 -120.0,-35.0 -140.0,0.0" fill="gold"/>
+<polyline points="-140.0,0.0 -100.0,0.0 -120.0,-35.0 -140.0,0.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-120.0,-35.0 -80.0,-35.0 -100.0,0.0 -120.0,-35.0" fill="teal"/>
+<polyline points="-120.0,-35.0 -80.0,-35.0 -100.0,0.0 -120.0,-35.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-100.0,0.0 -60.0,0.0 -80.0,-35.0 -100.0,0.0" fill="crimson"/>
+<polyline points="-100.0,0.0 -60.0,0.0 -80.0,-35.0 -100.0,0.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-80.0,-35.0 -40.0,-35.0 -60.0,0.0 -80.0,-35.0" fill="gold"/>
+<polyline points="-80.0,-35.0 -40.0,-35.0 -60.0,0.0 -80.0,-35.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-60.0,0.0 -20.0,0.0 -40.0,-35.0 -60.0,0.0" fill="teal"/>
+<polyline points="-60.0,0.0 -20.0,0.0 -40.0,-35.0 -60.0,0.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-40.0,-35.0 0.0,-35.0 -20.0,0.0 -40.0,-35.0" fill="crimson"/>
+<polyline points="-40.0,-35.0 0.0,-35.0 -20.0,0.0 -40.0,-35.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-20.0,0.0 20.0,0.0 0.0,-35.0 -20.0,0.0" fill="gold"/>
+<polyline points="-20.0,0.0 20.0,0.0 0.0,-35.0 -20.0,0.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-220.0,-35.0 -180.0,-35.0 -200.0,-70.0 -220.0,-35.0" fill="gold"/>
+<polyline points="-220.0,-35.0 -180.0,-35.0 -200.0,-70.0 -220.0,-35.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-200.0,-70.0 -160.0,-70.0 -180.0,-35.0 -200.0,-70.0" fill="teal"/>
+<polyline points="-200.0,-70.0 -160.0,-70.0 -180.0,-35.0 -200.0,-70.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-180.0,-35.0 -140.0,-35.0 -160.0,-70.0 -180.0,-35.0" fill="crimson"/>
+<polyline points="-180.0,-35.0 -140.0,-35.0 -160.0,-70.0 -180.0,-35.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-160.0,-70.0 -120.0,-70.0 -140.0,-35.0 -160.0,-70.0" fill="gold"/>
+<polyline points="-160.0,-70.0 -120.0,-70.0 -140.0,-35.0 -160.0,-70.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-140.0,-35.0 -100.0,-35.0 -120.0,-70.0 -140.0,-35.0" fill="teal"/>
+<polyline points="-140.0,-35.0 -100.0,-35.0 -120.0,-70.0 -140.0,-35.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-120.0,-70.0 -80.0,-70.0 -100.0,-35.0 -120.0,-70.0" fill="crimson"/>
+<polyline points="-120.0,-70.0 -80.0,-70.0 -100.0,-35.0 -120.0,-70.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-100.0,-35.0 -60.0,-35.0 -80.0,-70.0 -100.0,-35.0" fill="gold"/>
+<polyline points="-100.0,-35.0 -60.0,-35.0 -80.0,-70.0 -100.0,-35.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-80.0,-70.0 -40.0,-70.0 -60.0,-35.0 -80.0,-70.0" fill="teal"/>
+<polyline points="-80.0,-70.0 -40.0,-70.0 -60.0,-35.0 -80.0,-70.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-60.0,-35.0 -20.0,-35.0 -40.0,-70.0 -60.0,-35.0" fill="crimson"/>
+<polyline points="-60.0,-35.0 -20.0,-35.0 -40.0,-70.0 -60.0,-35.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-40.0,-70.0 0.0,-70.0 -20.0,-35.0 -40.0,-70.0" fill="gold"/>
+<polyline points="-40.0,-70.0 0.0,-70.0 -20.0,-35.0 -40.0,-70.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-20.0,-35.0 20.0,-35.0 0.0,-70.0 -20.0,-35.0" fill="teal"/>
+<polyline points="-20.0,-35.0 20.0,-35.0 0.0,-70.0 -20.0,-35.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-220.0,-70.0 -180.0,-70.0 -200.0,-105.0 -220.0,-70.0" fill="teal"/>
+<polyline points="-220.0,-70.0 -180.0,-70.0 -200.0,-105.0 -220.0,-70.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-200.0,-105.0 -160.0,-105.0 -180.0,-70.0 -200.0,-105.0" fill="crimson"/>
+<polyline points="-200.0,-105.0 -160.0,-105.0 -180.0,-70.0 -200.0,-105.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-180.0,-70.0 -140.0,-70.0 -160.0,-105.0 -180.0,-70.0" fill="gold"/>
+<polyline points="-180.0,-70.0 -140.0,-70.0 -160.0,-105.0 -180.0,-70.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-160.0,-105.0 -120.0,-105.0 -140.0,-70.0 -160.0,-105.0" fill="teal"/>
+<polyline points="-160.0,-105.0 -120.0,-105.0 -140.0,-70.0 -160.0,-105.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-140.0,-70.0 -100.0,-70.0 -120.0,-105.0 -140.0,-70.0" fill="crimson"/>
+<polyline points="-140.0,-70.0 -100.0,-70.0 -120.0,-105.0 -140.0,-70.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-120.0,-105.0 -80.0,-105.0 -100.0,-70.0 -120.0,-105.0" fill="gold"/>
+<polyline points="-120.0,-105.0 -80.0,-105.0 -100.0,-70.0 -120.0,-105.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-100.0,-70.0 -60.0,-70.0 -80.0,-105.0 -100.0,-70.0" fill="teal"/>
+<polyline points="-100.0,-70.0 -60.0,-70.0 -80.0,-105.0 -100.0,-70.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-80.0,-105.0 -40.0,-105.0 -60.0,-70.0 -80.0,-105.0" fill="crimson"/>
+<polyline points="-80.0,-105.0 -40.0,-105.0 -60.0,-70.0 -80.0,-105.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-60.0,-70.0 -20.0,-70.0 -40.0,-105.0 -60.0,-70.0" fill="gold"/>
+<polyline points="-60.0,-70.0 -20.0,-70.0 -40.0,-105.0 -60.0,-70.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-40.0,-105.0 0.0,-105.0 -20.0,-70.0 -40.0,-105.0" fill="teal"/>
+<polyline points="-40.0,-105.0 0.0,-105.0 -20.0,-70.0 -40.0,-105.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-20.0,-70.0 20.0,-70.0 0.0,-105.0 -20.0,-70.0" fill="crimson"/>
+<polyline points="-20.0,-70.0 20.0,-70.0 0.0,-105.0 -20.0,-70.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-220.0,-105.0 -180.0,-105.0 -200.0,-140.0 -220.0,-105.0" fill="crimson"/>
+<polyline points="-220.0,-105.0 -180.0,-105.0 -200.0,-140.0 -220.0,-105.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-200.0,-140.0 -160.0,-140.0 -180.0,-105.0 -200.0,-140.0" fill="gold"/>
+<polyline points="-200.0,-140.0 -160.0,-140.0 -180.0,-105.0 -200.0,-140.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-180.0,-105.0 -140.0,-105.0 -160.0,-140.0 -180.0,-105.0" fill="teal"/>
+<polyline points="-180.0,-105.0 -140.0,-105.0 -160.0,-140.0 -180.0,-105.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-160.0,-140.0 -120.0,-140.0 -140.0,-105.0 -160.0,-140.0" fill="crimson"/>
+<polyline points="-160.0,-140.0 -120.0,-140.0 -140.0,-105.0 -160.0,-140.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-140.0,-105.0 -100.0,-105.0 -120.0,-140.0 -140.0,-105.0" fill="gold"/>
+<polyline points="-140.0,-105.0 -100.0,-105.0 -120.0,-140.0 -140.0,-105.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-120.0,-140.0 -80.0,-140.0 -100.0,-105.0 -120.0,-140.0" fill="teal"/>
+<polyline points="-120.0,-140.0 -80.0,-140.0 -100.0,-105.0 -120.0,-140.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-100.0,-105.0 -60.0,-105.0 -80.0,-140.0 -100.0,-105.0" fill="crimson"/>
+<polyline points="-100.0,-105.0 -60.0,-105.0 -80.0,-140.0 -100.0,-105.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-80.0,-140.0 -40.0,-140.0 -60.0,-105.0 -80.0,-140.0" fill="gold"/>
+<polyline points="-80.0,-140.0 -40.0,-140.0 -60.0,-105.0 -80.0,-140.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-60.0,-105.0 -20.0,-105.0 -40.0,-140.0 -60.0,-105.0" fill="teal"/>
+<polyline points="-60.0,-105.0 -20.0,-105.0 -40.0,-140.0 -60.0,-105.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-40.0,-140.0 0.0,-140.0 -20.0,-105.0 -40.0,-140.0" fill="crimson"/>
+<polyline points="-40.0,-140.0 0.0,-140.0 -20.0,-105.0 -40.0,-140.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-20.0,-105.0 20.0,-105.0 0.0,-140.0 -20.0,-105.0" fill="gold"/>
+<polyline points="-20.0,-105.0 20.0,-105.0 0.0,-140.0 -20.0,-105.0" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+</svg></div>
+  <p>Szorgalmi! Négy sor háromszög, hézag nélkül egymás mellett. A színek (piros, sárga, türkiz) soronként eggyel elcsúsznak.</p>
+  <details><summary>Tipp</summary><p>Egy háromszög magassága kb. 35, ha az oldala 40. A szín: (i + sor) % 3. A felfelé és lefelé álló háromszögeket goto()-val rajzold.</p></details>
+</article>
+</main>
+<footer>Nem kell pontosan egyformának lennie. Ha kész vagy, színezd át, méretezd át, vagy találj ki saját képet!</footer>
+</div>
+</body>
+</html>

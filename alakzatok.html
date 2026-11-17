@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Teknőcös képrajzolás</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+:root{
+  --papir:#f3f6f4; --racs:#dbe5df; --lap:#ffffff; --tinta:#1c2a33; --halvany:#5b6b73;
+  --kek:#1f5fa8; --zold:#2f8a4e; --narancs:#c9701a; --piros:#b83a3a; --vonal:#d4ddd8; --kodhatter:#eef3f0;
+  --display:"Bricolage Grotesque",system-ui,sans-serif; --body:"Source Sans 3",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --papir:#141b1f; --racs:#1e282d; --lap:#1b2429; --tinta:#e6ecef; --halvany:#9aabb3;
+  --kek:#7fb0ea; --zold:#6cc68d; --narancs:#eaa25a; --piros:#ec8a8a; --vonal:#2c393f; --kodhatter:#111719; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --papir:#141b1f; --racs:#1e282d; --lap:#1b2429; --tinta:#e6ecef; --halvany:#9aabb3;
+  --kek:#7fb0ea; --zold:#6cc68d; --narancs:#eaa25a; --piros:#ec8a8a; --vonal:#2c393f; --kodhatter:#111719; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--papir);color:var(--tinta);font:17px/1.5 var(--body);
+  background-image:linear-gradient(var(--racs) 1px,transparent 1px),linear-gradient(90deg,var(--racs) 1px,transparent 1px);background-size:24px 24px}
+.wrap{max-width:1200px;margin:0 auto;padding-inline:20px;padding-block:20px 56px}
+nav{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;margin-bottom:22px;font-weight:600}
+nav a{color:var(--kek);text-decoration:none;padding:4px 0;border-bottom:2px solid transparent}
+nav a:hover{border-bottom-color:var(--kek)}
+nav a[aria-current]{color:var(--tinta);border-bottom-color:var(--tinta)}
+nav .haz{font:800 1.05rem var(--display);color:var(--tinta);margin-right:8px}
+a:focus-visible,summary:focus-visible{outline:2px solid var(--kek);outline-offset:2px}
+header{display:grid;gap:10px;margin-bottom:24px}
+h1{font:800 clamp(2rem,5vw,3.2rem)/1.05 var(--display);margin:0;text-wrap:balance;letter-spacing:-.01em}
+.lead{margin:0;max-width:62ch;color:var(--halvany);font-size:1.1rem}
+.lead b{color:var(--tinta)}
+code{font:500 .9em var(--mono)}
+.puska{background:var(--lap);border:1px solid var(--vonal);border-radius:10px;padding:14px 18px;margin-bottom:28px;overflow-x:auto}
+.puska h3{margin:0 0 8px;font:600 .8rem var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--halvany)}
+.puska ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 18px;font:500 .88rem var(--mono)}
+.puska li span{color:var(--halvany);font-family:var(--body);font-size:.85rem}
+.racs{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:18px}
+.kartya{background:var(--lap);border:1px solid var(--vonal);border-radius:10px;padding:14px 16px 12px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.fej{display:flex;align-items:baseline;gap:8px}
+.szam{font:800 1.5rem var(--display);color:var(--kek);font-variant-numeric:tabular-nums}
+h2{font:600 1.2rem/1.2 var(--display);margin:0;flex:1}
+.szint{font-size:.95rem;letter-spacing:1px;white-space:nowrap}
+.sz1{color:var(--zold)} .sz2{color:var(--narancs)} .sz3{color:var(--piros)}
+.vaszon{background:#fff;border:1px solid var(--vonal);border-radius:6px;aspect-ratio:4/3;display:grid;place-items:center;padding:10px;max-width:100%}
+.kep{width:100%;height:100%;display:block}
+.kartya p{margin:0}
+details{border-top:1px dashed var(--vonal);padding-top:8px;margin-top:auto}
+summary{cursor:pointer;font-weight:600;color:var(--kek)}
+details p{margin-top:6px;color:var(--halvany)}
+footer{margin-top:28px;color:var(--halvany);font-size:.95rem}
+/* főoldal */
+.ket{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px;margin-bottom:18px}
+.doboz{background:var(--lap);border:1px solid var(--vonal);border-radius:10px;padding:16px 18px;min-width:0}
+.doboz h2{margin-bottom:10px}
+.doboz p{margin:0 0 10px}
+.doboz p:last-child{margin-bottom:0}
+pre{margin:0;background:var(--kodhatter);border-radius:8px;padding:12px 14px;overflow-x:auto;font:500 .88rem/1.55 var(--mono)}
+pre .m{color:var(--halvany)}
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+td{padding:5px 8px;border-top:1px solid var(--vonal);vertical-align:top}
+td:first-child{font:500 .86rem var(--mono);white-space:nowrap;width:1%;padding-right:24px}
+tr:first-child td{border-top:0}
+.tabla{overflow-x:auto}
+.cso{font:600 .78rem var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--halvany);padding-top:12px}
+ul.lista{margin:0;padding-left:20px;display:grid;gap:6px}
+.oldalak{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin:6px 0 26px}
+.oldal{background:var(--lap);border:1px solid var(--vonal);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;color:inherit;text-decoration:none;min-width:0;transition:border-color .15s}
+.oldal:hover{border-color:var(--kek)}
+.oldal h2{color:var(--kek)}
+.oldal p{margin:0;color:var(--halvany)}
+.oldal .tovabb{font-weight:600;color:var(--kek);margin-top:auto}
+.koord{display:grid;place-items:center}
+.koord svg{width:100%;max-width:300px;height:auto}
+.koord text{fill:var(--tinta);font:13px var(--body)}
+.koord .t{stroke:var(--halvany)}
+.koord .r{stroke:var(--vonal)}
+.koord .h{fill:var(--zold)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav><a class="haz" href="index.html">🐢 Teknőcgrafika</a><a href="alakzatok.html" aria-current="page">Alakzatok</a><a href="sormintak.html">Sorminták</a><a href="rekurzio.html">Rekurzió</a></nav>
+<header><h1>Teknőcös képrajzolás</h1><p class="lead"><b>Rajzold meg a képeket Python turtle-lel!</b> Haladj sorban, nem baj, ha nem érsz a végére. A csillagok a nehézséget mutatják. Ha elakadsz, nyisd ki a tippet.</p></header>
+<section class="puska" aria-label="Parancsok"><h3>Emlékeztető</h3><ul><li>forward(100) <span>előre</span></li><li>left(90) / right(90) <span>fordul</span></li><li>penup() / pendown() <span>toll fel / le</span></li><li>goto(x, y) <span>odaugrik</span></li><li>setheading(0) <span>jobbra néz</span></li><li>circle(50) <span>kör</span></li><li>color(&quot;black&quot;, &quot;red&quot;) <span>vonal, kitöltés</span></li><li>begin_fill() … end_fill() <span>kitöltés</span></li><li>pensize(3) <span>vastagság</span></li><li>dot(10, &quot;black&quot;) <span>pötty</span></li><li>speed(0) <span>leggyorsabb</span></li></ul></section>
+<main class="racs">
+<article class="kartya" id="f1">
+  <div class="fej"><span class="szam">1.</span><h2>Négyzetsor</h2><span class="szint sz1" title="Bemelegítő">★☆☆</span></div>
+  <div class="vaszon"><svg class="kep" xmlns="http://www.w3.org/2000/svg" viewBox="-164.0 -94.0 308.0 108.0" role="img">
+<rect x="-164.0" y="-94.0" width="308.0" height="108.0" fill="white"/>
+<polygon points="-150.0,0.0 -70.0,-0.0 -70.0,-80.0 -150.0,-80.0 -150.0,-0.0" fill="red"/>
+<polyline points="-150.0,0.0 -70.0,-0.0 -70.0,-80.0 -150.0,-80.0 -150.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-50.0,0.0 30.0,-0.0 30.0,-80.0 -50.0,-80.0 -50.0,-0.0" fill="yellow"/>
+<polyline points="-50.0,0.0 30.0,-0.0 30.0,-80.0 -50.0,-80.0 -50.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="50.0,0.0 130.0,-0.0 130.0,-80.0 50.0,-80.0 50.0,-0.0" fill="green"/>
+<polyline points="50.0,0.0 130.0,-0.0 130.0,-80.0 50.0,-80.0 50.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+</svg></div>
+  <p>Rajzolj három egyforma, kitöltött négyzetet egymás mellé: piros, sárga, zöld.</p>
+  <details><summary>Tipp</summary><p>Egy négyzet: 4× előre + balra 90°. A kitöltéshez: begin_fill() … end_fill().</p></details>
+</article>
+<article class="kartya" id="f2">
+  <div class="fej"><span class="szam">2.</span><h2>Kis ház</h2><span class="szint sz1" title="Bemelegítő">★☆☆</span></div>
+  <div class="vaszon"><svg class="kep" xmlns="http://www.w3.org/2000/svg" viewBox="-14.0 -293.9 178.0 307.9" role="img">
+<rect x="-14.0" y="-293.9" width="178.0" height="307.9" fill="white"/>
+<polygon points="0.0,-0.0 150.0,-0.0 150.0,-150.0 0.0,-150.0 -0.0,-0.0" fill="burlywood"/>
+<polyline points="0.0,-0.0 150.0,-0.0 150.0,-150.0 0.0,-150.0 -0.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="0.0,-150.0 150.0,-150.0 75.0,-279.9 -0.0,-150.0" fill="red"/>
+<polyline points="0.0,-150.0 150.0,-150.0 75.0,-279.9 -0.0,-150.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="55.0,0.0 95.0,-0.0 95.0,-75.0 55.0,-75.0 55.0,-0.0" fill="saddlebrown"/>
+<polyline points="55.0,0.0 95.0,-0.0 95.0,-75.0 55.0,-75.0 55.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+</svg></div>
+  <p>Rajzold meg a házat: barna fal (négyzet), piros háromszög tető, sötét ajtó.</p>
+  <details><summary>Tipp</summary><p>A tető egy szabályos háromszög: 3× előre + balra 120°. A fal tetején kezdd!</p></details>
+</article>
+<article class="kartya" id="f3">
+  <div class="fej"><span class="szam">3.</span><h2>Hóember</h2><span class="szint sz1" title="Bemelegítő">★☆☆</span></div>
+  <div class="vaszon"><svg class="kep" xmlns="http://www.w3.org/2000/svg" viewBox="-94.0 -162.0 188.0 356.0" role="img">
+<rect x="-94.0" y="-162.0" width="188.0" height="356.0" fill="lightblue"/>
+<polygon points="0.0,180.0 4.2,179.9 8.4,179.6 12.5,179.0 16.6,178.3 20.7,177.3 24.7,176.1 28.7,174.7 32.5,173.1 36.3,171.3 40.0,169.3 43.6,167.1 47.0,164.7 50.3,162.2 53.5,159.5 56.6,156.6 59.5,153.5 62.2,150.3 64.7,147.0 67.1,143.6 69.3,140.0 71.3,136.3 73.1,132.5 74.7,128.7 76.1,124.7 77.3,120.7 78.3,116.6 79.0,112.5 79.6,108.4 79.9,104.2 80.0,100.0 79.9,95.8 79.6,91.6 79.0,87.5 78.3,83.4 77.3,79.3 76.1,75.3 74.7,71.3 73.1,67.5 71.3,63.7 69.3,60.0 67.1,56.4 64.7,53.0 62.2,49.7 59.5,46.5 56.6,43.4 53.5,40.5 50.3,37.8 47.0,35.3 43.6,32.9 40.0,30.7 36.3,28.7 32.5,26.9 28.7,25.3 24.7,23.9 20.7,22.7 16.6,21.7 12.5,21.0 8.4,20.4 4.2,20.1 0.0,20.0 -4.2,20.1 -8.4,20.4 -12.5,21.0 -16.6,21.7 -20.7,22.7 -24.7,23.9 -28.7,25.3 -32.5,26.9 -36.3,28.7 -40.0,30.7 -43.6,32.9 -47.0,35.3 -50.3,37.8 -53.5,40.5 -56.6,43.4 -59.5,46.5 -62.2,49.7 -64.7,53.0 -67.1,56.4 -69.3,60.0 -71.3,63.7 -73.1,67.5 -74.7,71.3 -76.1,75.3 -77.3,79.3 -78.3,83.4 -79.0,87.5 -79.6,91.6 -79.9,95.8 -80.0,100.0 -79.9,104.2 -79.6,108.4 -79.0,112.5 -78.3,116.6 -77.3,120.7 -76.1,124.7 -74.7,128.7 -73.1,132.5 -71.3,136.3 -69.3,140.0 -67.1,143.6 -64.7,147.0 -62.2,150.3 -59.5,153.5 -56.6,156.6 -53.5,159.5 -50.3,162.2 -47.0,164.7 -43.6,167.1 -40.0,169.3 -36.3,171.3 -32.5,173.1 -28.7,174.7 -24.7,176.1 -20.7,177.3 -16.6,178.3 -12.5,179.0 -8.4,179.6 -4.2,179.9 0.0,180.0" fill="white"/>
+<polyline points="0.0,180.0 4.2,179.9 8.4,179.6 12.5,179.0 16.6,178.3 20.7,177.3 24.7,176.1 28.7,174.7 32.5,173.1 36.3,171.3 40.0,169.3 43.6,167.1 47.0,164.7 50.3,162.2 53.5,159.5 56.6,156.6 59.5,153.5 62.2,150.3 64.7,147.0 67.1,143.6 69.3,140.0 71.3,136.3 73.1,132.5 74.7,128.7 76.1,124.7 77.3,120.7 78.3,116.6 79.0,112.5 79.6,108.4 79.9,104.2 80.0,100.0 79.9,95.8 79.6,91.6 79.0,87.5 78.3,83.4 77.3,79.3 76.1,75.3 74.7,71.3 73.1,67.5 71.3,63.7 69.3,60.0 67.1,56.4 64.7,53.0 62.2,49.7 59.5,46.5 56.6,43.4 53.5,40.5 50.3,37.8 47.0,35.3 43.6,32.9 40.0,30.7 36.3,28.7 32.5,26.9 28.7,25.3 24.7,23.9 20.7,22.7 16.6,21.7 12.5,21.0 8.4,20.4 4.2,20.1 0.0,20.0 -4.2,20.1 -8.4,20.4 -12.5,21.0 -16.6,21.7 -20.7,22.7 -24.7,23.9 -28.7,25.3 -32.5,26.9 -36.3,28.7 -40.0,30.7 -43.6,32.9 -47.0,35.3 -50.3,37.8 -53.5,40.5 -56.6,43.4 -59.5,46.5 -62.2,49.7 -64.7,53.0 -67.1,56.4 -69.3,60.0 -71.3,63.7 -73.1,67.5 -74.7,71.3 -76.1,75.3 -77.3,79.3 -78.3,83.4 -79.0,87.5 -79.6,91.6 -79.9,95.8 -80.0,100.0 -79.9,104.2 -79.6,108.4 -79.0,112.5 -78.3,116.6 -77.3,120.7 -76.1,124.7 -74.7,128.7 -73.1,132.5 -71.3,136.3 -69.3,140.0 -67.1,143.6 -64.7,147.0 -62.2,150.3 -59.5,153.5 -56.6,156.6 -53.5,159.5 -50.3,162.2 -47.0,164.7 -43.6,167.1 -40.0,169.3 -36.3,171.3 -32.5,173.1 -28.7,174.7 -24.7,176.1 -20.7,177.3 -16.6,178.3 -12.5,179.0 -8.4,179.6 -4.2,179.9 0.0,180.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="0.0,35.0 2.9,34.9 5.7,34.7 8.6,34.3 11.4,33.8 14.2,33.1 17.0,32.3 19.7,31.3 22.4,30.2 25.0,29.0 27.5,27.6 30.0,26.1 32.3,24.5 34.6,22.7 36.8,20.9 38.9,18.9 40.9,16.8 42.7,14.6 44.5,12.3 46.1,10.0 47.6,7.5 49.0,5.0 50.2,2.4 51.3,-0.3 52.3,-3.0 53.1,-5.8 53.8,-8.6 54.3,-11.4 54.7,-14.3 54.9,-17.1 55.0,-20.0 54.9,-22.9 54.7,-25.7 54.3,-28.6 53.8,-31.4 53.1,-34.2 52.3,-37.0 51.3,-39.7 50.2,-42.4 49.0,-45.0 47.6,-47.5 46.1,-50.0 44.5,-52.3 42.7,-54.6 40.9,-56.8 38.9,-58.9 36.8,-60.9 34.6,-62.7 32.3,-64.5 30.0,-66.1 27.5,-67.6 25.0,-69.0 22.4,-70.2 19.7,-71.3 17.0,-72.3 14.2,-73.1 11.4,-73.8 8.6,-74.3 5.7,-74.7 2.9,-74.9 0.0,-75.0 -2.9,-74.9 -5.7,-74.7 -8.6,-74.3 -11.4,-73.8 -14.2,-73.1 -17.0,-72.3 -19.7,-71.3 -22.4,-70.2 -25.0,-69.0 -27.5,-67.6 -30.0,-66.1 -32.3,-64.5 -34.6,-62.7 -36.8,-60.9 -38.9,-58.9 -40.9,-56.8 -42.7,-54.6 -44.5,-52.3 -46.1,-50.0 -47.6,-47.5 -49.0,-45.0 -50.2,-42.4 -51.3,-39.7 -52.3,-37.0 -53.1,-34.2 -53.8,-31.4 -54.3,-28.6 -54.7,-25.7 -54.9,-22.9 -55.0,-20.0 -54.9,-17.1 -54.7,-14.3 -54.3,-11.4 -53.8,-8.6 -53.1,-5.8 -52.3,-3.0 -51.3,-0.3 -50.2,2.4 -49.0,5.0 -47.6,7.5 -46.1,10.0 -44.5,12.3 -42.7,14.6 -40.9,16.8 -38.9,18.9 -36.8,20.9 -34.6,22.7 -32.3,24.5 -30.0,26.1 -27.5,27.6 -25.0,29.0 -22.4,30.2 -19.7,31.3 -17.0,32.3 -14.2,33.1 -11.4,33.8 -8.6,34.3 -5.7,34.7 -2.9,34.9 0.0,35.0" fill="white"/>
+<polyline points="0.0,35.0 2.9,34.9 5.7,34.7 8.6,34.3 11.4,33.8 14.2,33.1 17.0,32.3 19.7,31.3 22.4,30.2 25.0,29.0 27.5,27.6 30.0,26.1 32.3,24.5 34.6,22.7 36.8,20.9 38.9,18.9 40.9,16.8 42.7,14.6 44.5,12.3 46.1,10.0 47.6,7.5 49.0,5.0 50.2,2.4 51.3,-0.3 52.3,-3.0 53.1,-5.8 53.8,-8.6 54.3,-11.4 54.7,-14.3 54.9,-17.1 55.0,-20.0 54.9,-22.9 54.7,-25.7 54.3,-28.6 53.8,-31.4 53.1,-34.2 52.3,-37.0 51.3,-39.7 50.2,-42.4 49.0,-45.0 47.6,-47.5 46.1,-50.0 44.5,-52.3 42.7,-54.6 40.9,-56.8 38.9,-58.9 36.8,-60.9 34.6,-62.7 32.3,-64.5 30.0,-66.1 27.5,-67.6 25.0,-69.0 22.4,-70.2 19.7,-71.3 17.0,-72.3 14.2,-73.1 11.4,-73.8 8.6,-74.3 5.7,-74.7 2.9,-74.9 0.0,-75.0 -2.9,-74.9 -5.7,-74.7 -8.6,-74.3 -11.4,-73.8 -14.2,-73.1 -17.0,-72.3 -19.7,-71.3 -22.4,-70.2 -25.0,-69.0 -27.5,-67.6 -30.0,-66.1 -32.3,-64.5 -34.6,-62.7 -36.8,-60.9 -38.9,-58.9 -40.9,-56.8 -42.7,-54.6 -44.5,-52.3 -46.1,-50.0 -47.6,-47.5 -49.0,-45.0 -50.2,-42.4 -51.3,-39.7 -52.3,-37.0 -53.1,-34.2 -53.8,-31.4 -54.3,-28.6 -54.7,-25.7 -54.9,-22.9 -55.0,-20.0 -54.9,-17.1 -54.7,-14.3 -54.3,-11.4 -53.8,-8.6 -53.1,-5.8 -52.3,-3.0 -51.3,-0.3 -50.2,2.4 -49.0,5.0 -47.6,7.5 -46.1,10.0 -44.5,12.3 -42.7,14.6 -40.9,16.8 -38.9,18.9 -36.8,20.9 -34.6,22.7 -32.3,24.5 -30.0,26.1 -27.5,27.6 -25.0,29.0 -22.4,30.2 -19.7,31.3 -17.0,32.3 -14.2,33.1 -11.4,33.8 -8.6,34.3 -5.7,34.7 -2.9,34.9 0.0,35.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="0.0,-72.0 2.0,-72.1 4.0,-72.2 5.9,-72.5 7.9,-72.8 9.8,-73.3 11.7,-73.9 13.6,-74.5 15.5,-75.3 17.3,-76.1 19.0,-77.1 20.7,-78.1 22.3,-79.3 23.9,-80.5 25.4,-81.8 26.9,-83.1 28.2,-84.6 29.5,-86.1 30.7,-87.7 31.9,-89.3 32.9,-91.0 33.9,-92.7 34.7,-94.5 35.5,-96.4 36.1,-98.3 36.7,-100.2 37.2,-102.1 37.5,-104.1 37.8,-106.0 37.9,-108.0 38.0,-110.0 37.9,-112.0 37.8,-114.0 37.5,-115.9 37.2,-117.9 36.7,-119.8 36.1,-121.7 35.5,-123.6 34.7,-125.5 33.9,-127.3 32.9,-129.0 31.9,-130.7 30.7,-132.3 29.5,-133.9 28.2,-135.4 26.9,-136.9 25.4,-138.2 23.9,-139.5 22.3,-140.7 20.7,-141.9 19.0,-142.9 17.3,-143.9 15.5,-144.7 13.6,-145.5 11.7,-146.1 9.8,-146.7 7.9,-147.2 5.9,-147.5 4.0,-147.8 2.0,-147.9 0.0,-148.0 -2.0,-147.9 -4.0,-147.8 -5.9,-147.5 -7.9,-147.2 -9.8,-146.7 -11.7,-146.1 -13.6,-145.5 -15.5,-144.7 -17.3,-143.9 -19.0,-142.9 -20.7,-141.9 -22.3,-140.7 -23.9,-139.5 -25.4,-138.2 -26.9,-136.9 -28.2,-135.4 -29.5,-133.9 -30.7,-132.3 -31.9,-130.7 -32.9,-129.0 -33.9,-127.3 -34.7,-125.5 -35.5,-123.6 -36.1,-121.7 -36.7,-119.8 -37.2,-117.9 -37.5,-115.9 -37.8,-114.0 -37.9,-112.0 -38.0,-110.0 -37.9,-108.0 -37.8,-106.0 -37.5,-104.1 -37.2,-102.1 -36.7,-100.2 -36.1,-98.3 -35.5,-96.4 -34.7,-94.5 -33.9,-92.7 -32.9,-91.0 -31.9,-89.3 -30.7,-87.7 -29.5,-86.1 -28.2,-84.6 -26.9,-83.1 -25.4,-81.8 -23.9,-80.5 -22.3,-79.3 -20.7,-78.1 -19.0,-77.1 -17.3,-76.1 -15.5,-75.3 -13.6,-74.5 -11.7,-73.9 -9.8,-73.3 -7.9,-72.8 -5.9,-72.5 -4.0,-72.2 -2.0,-72.1 0.0,-72.0" fill="white"/>
+<polyline points="0.0,-72.0 2.0,-72.1 4.0,-72.2 5.9,-72.5 7.9,-72.8 9.8,-73.3 11.7,-73.9 13.6,-74.5 15.5,-75.3 17.3,-76.1 19.0,-77.1 20.7,-78.1 22.3,-79.3 23.9,-80.5 25.4,-81.8 26.9,-83.1 28.2,-84.6 29.5,-86.1 30.7,-87.7 31.9,-89.3 32.9,-91.0 33.9,-92.7 34.7,-94.5 35.5,-96.4 36.1,-98.3 36.7,-100.2 37.2,-102.1 37.5,-104.1 37.8,-106.0 37.9,-108.0 38.0,-110.0 37.9,-112.0 37.8,-114.0 37.5,-115.9 37.2,-117.9 36.7,-119.8 36.1,-121.7 35.5,-123.6 34.7,-125.5 33.9,-127.3 32.9,-129.0 31.9,-130.7 30.7,-132.3 29.5,-133.9 28.2,-135.4 26.9,-136.9 25.4,-138.2 23.9,-139.5 22.3,-140.7 20.7,-141.9 19.0,-142.9 17.3,-143.9 15.5,-144.7 13.6,-145.5 11.7,-146.1 9.8,-146.7 7.9,-147.2 5.9,-147.5 4.0,-147.8 2.0,-147.9 0.0,-148.0 -2.0,-147.9 -4.0,-147.8 -5.9,-147.5 -7.9,-147.2 -9.8,-146.7 -11.7,-146.1 -13.6,-145.5 -15.5,-144.7 -17.3,-143.9 -19.0,-142.9 -20.7,-141.9 -22.3,-140.7 -23.9,-139.5 -25.4,-138.2 -26.9,-136.9 -28.2,-135.4 -29.5,-133.9 -30.7,-132.3 -31.9,-130.7 -32.9,-129.0 -33.9,-127.3 -34.7,-125.5 -35.5,-123.6 -36.1,-121.7 -36.7,-119.8 -37.2,-117.9 -37.5,-115.9 -37.8,-114.0 -37.9,-112.0 -38.0,-110.0 -37.9,-108.0 -37.8,-106.0 -37.5,-104.1 -37.2,-102.1 -36.7,-100.2 -36.1,-98.3 -35.5,-96.4 -34.7,-94.5 -33.9,-92.7 -32.9,-91.0 -31.9,-89.3 -30.7,-87.7 -29.5,-86.1 -28.2,-84.6 -26.9,-83.1 -25.4,-81.8 -23.9,-80.5 -22.3,-79.3 -20.7,-78.1 -19.0,-77.1 -17.3,-76.1 -15.5,-75.3 -13.6,-74.5 -11.7,-73.9 -9.8,-73.3 -7.9,-72.8 -5.9,-72.5 -4.0,-72.2 -2.0,-72.1 0.0,-72.0" fill="none" stroke="gray" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="-13.0" cy="-122.0" r="5.0" fill="black"/>
+<circle cx="13.0" cy="-122.0" r="5.0" fill="black"/>
+<polygon points="0.0,-112.0 45.0,-105.0 0.0,-100.0 0.0,-112.0" fill="orange"/>
+<polyline points="0.0,-112.0 45.0,-105.0 0.0,-100.0 0.0,-112.0" fill="none" stroke="darkorange" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+</svg></div>
+  <p>Három egymásra tett fehér kör, fekete szemek, narancs háromszög orr.</p>
+  <details><summary>Tipp</summary><p>A circle(r) a teknős bal oldalán rajzol kört. Szemhez jó a dot(10, &quot;black&quot;).</p></details>
+</article>
+<article class="kartya" id="f4">
+  <div class="fej"><span class="szam">4.</span><h2>Sokszögsor</h2><span class="szint sz2" title="Közepes">★★☆</span></div>
+  <div class="vaszon"><svg class="kep" xmlns="http://www.w3.org/2000/svg" viewBox="-314.0 -134.7 633.4 148.7" role="img">
+<rect x="-314.0" y="-134.7" width="633.4" height="148.7" fill="white"/>
+<polyline points="-300.0,0.0 -250.0,-0.0 -275.0,-43.3 -300.0,-0.0" fill="none" stroke="black" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-170.0,0.0 -120.0,-0.0 -120.0,-50.0 -170.0,-50.0 -170.0,-0.0" fill="none" stroke="black" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-40.0,0.0 10.0,-0.0 25.5,-47.6 -15.0,-76.9 -55.5,-47.6 -40.0,-0.0" fill="none" stroke="black" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="90.0,0.0 140.0,-0.0 165.0,-43.3 140.0,-86.6 90.0,-86.6 65.0,-43.3 90.0,-0.0" fill="none" stroke="black" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="220.0,0.0 270.0,-0.0 305.4,-35.4 305.4,-85.4 270.0,-120.7 220.0,-120.7 184.6,-85.4 184.6,-35.4 220.0,0.0" fill="none" stroke="black" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+</svg></div>
+  <p>Rajzolj egymás mellé háromszöget, négyzetet, ötszöget, hatszöget és nyolcszöget, mind 50 hosszú oldallal.</p>
+  <details><summary>Tipp</summary><p>Egy n oldalú sokszögnél minden csúcsban 360 / n fokot kell fordulni.</p></details>
+</article>
+<article class="kartya" id="f5">
+  <div class="fej"><span class="szam">5.</span><h2>Csillag</h2><span class="szint sz2" title="Közepes">★★☆</span></div>
+  <div class="vaszon"><svg class="kep" xmlns="http://www.w3.org/2000/svg" viewBox="-14.0 -86.7 228.0 218.2" role="img">
+<rect x="-14.0" y="-86.7" width="228.0" height="218.2" fill="white"/>
+<polygon points="0.0,-0.0 200.0,-0.0 38.2,117.6 100.0,-72.7 161.8,117.6 -0.0,-0.0" fill="yellow"/>
+<polyline points="0.0,-0.0 200.0,-0.0 38.2,117.6 100.0,-72.7 161.8,117.6 -0.0,-0.0" fill="none" stroke="orange" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+</svg></div>
+  <p>Rajzolj egy sárgával kitöltött ötágú csillagot, narancs körvonallal.</p>
+  <details><summary>Tipp</summary><p>Ötször: előre 200, jobbra 144°.</p></details>
+</article>
+<article class="kartya" id="f6">
+  <div class="fej"><span class="szam">6.</span><h2>Napocska</h2><span class="szint sz2" title="Közepes">★★☆</span></div>
+  <div class="vaszon"><svg class="kep" xmlns="http://www.w3.org/2000/svg" viewBox="-134.0 -134.0 268.0 268.0" role="img">
+<rect x="-134.0" y="-134.0" width="268.0" height="268.0" fill="white"/>
+<polyline points="70.0,-0.0 120.0,-0.0" fill="none" stroke="orange" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="60.6,-35.0 103.9,-60.0" fill="none" stroke="orange" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="35.0,-60.6 60.0,-103.9" fill="none" stroke="orange" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="0.0,-70.0 0.0,-120.0" fill="none" stroke="orange" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-35.0,-60.6 -60.0,-103.9" fill="none" stroke="orange" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-60.6,-35.0 -103.9,-60.0" fill="none" stroke="orange" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-70.0,-0.0 -120.0,-0.0" fill="none" stroke="orange" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-60.6,35.0 -103.9,60.0" fill="none" stroke="orange" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-35.0,60.6 -60.0,103.9" fill="none" stroke="orange" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,70.0 -0.0,120.0" fill="none" stroke="orange" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="35.0,60.6 60.0,103.9" fill="none" stroke="orange" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="60.6,35.0 103.9,60.0" fill="none" stroke="orange" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="0.0,60.0 3.1,59.9 6.3,59.7 9.4,59.3 12.5,58.7 15.5,58.0 18.5,57.1 21.5,56.0 24.4,54.8 27.2,53.5 30.0,52.0 32.7,50.3 35.3,48.5 37.8,46.6 40.1,44.6 42.4,42.4 44.6,40.1 46.6,37.8 48.5,35.3 50.3,32.7 52.0,30.0 53.5,27.2 54.8,24.4 56.0,21.5 57.1,18.5 58.0,15.5 58.7,12.5 59.3,9.4 59.7,6.3 59.9,3.1 60.0,-0.0 59.9,-3.1 59.7,-6.3 59.3,-9.4 58.7,-12.5 58.0,-15.5 57.1,-18.5 56.0,-21.5 54.8,-24.4 53.5,-27.2 52.0,-30.0 50.3,-32.7 48.5,-35.3 46.6,-37.8 44.6,-40.1 42.4,-42.4 40.1,-44.6 37.8,-46.6 35.3,-48.5 32.7,-50.3 30.0,-52.0 27.2,-53.5 24.4,-54.8 21.5,-56.0 18.5,-57.1 15.5,-58.0 12.5,-58.7 9.4,-59.3 6.3,-59.7 3.1,-59.9 0.0,-60.0 -3.1,-59.9 -6.3,-59.7 -9.4,-59.3 -12.5,-58.7 -15.5,-58.0 -18.5,-57.1 -21.5,-56.0 -24.4,-54.8 -27.2,-53.5 -30.0,-52.0 -32.7,-50.3 -35.3,-48.5 -37.8,-46.6 -40.1,-44.6 -42.4,-42.4 -44.6,-40.1 -46.6,-37.8 -48.5,-35.3 -50.3,-32.7 -52.0,-30.0 -53.5,-27.2 -54.8,-24.4 -56.0,-21.5 -57.1,-18.5 -58.0,-15.5 -58.7,-12.5 -59.3,-9.4 -59.7,-6.3 -59.9,-3.1 -60.0,-0.0 -59.9,3.1 -59.7,6.3 -59.3,9.4 -58.7,12.5 -58.0,15.5 -57.1,18.5 -56.0,21.5 -54.8,24.4 -53.5,27.2 -52.0,30.0 -50.3,32.7 -48.5,35.3 -46.6,37.8 -44.6,40.1 -42.4,42.4 -40.1,44.6 -37.8,46.6 -35.3,48.5 -32.7,50.3 -30.0,52.0 -27.2,53.5 -24.4,54.8 -21.5,56.0 -18.5,57.1 -15.5,58.0 -12.5,58.7 -9.4,59.3 -6.3,59.7 -3.1,59.9 0.0,60.0" fill="gold"/>
+<polyline points="0.0,60.0 3.1,59.9 6.3,59.7 9.4,59.3 12.5,58.7 15.5,58.0 18.5,57.1 21.5,56.0 24.4,54.8 27.2,53.5 30.0,52.0 32.7,50.3 35.3,48.5 37.8,46.6 40.1,44.6 42.4,42.4 44.6,40.1 46.6,37.8 48.5,35.3 50.3,32.7 52.0,30.0 53.5,27.2 54.8,24.4 56.0,21.5 57.1,18.5 58.0,15.5 58.7,12.5 59.3,9.4 59.7,6.3 59.9,3.1 60.0,-0.0 59.9,-3.1 59.7,-6.3 59.3,-9.4 58.7,-12.5 58.0,-15.5 57.1,-18.5 56.0,-21.5 54.8,-24.4 53.5,-27.2 52.0,-30.0 50.3,-32.7 48.5,-35.3 46.6,-37.8 44.6,-40.1 42.4,-42.4 40.1,-44.6 37.8,-46.6 35.3,-48.5 32.7,-50.3 30.0,-52.0 27.2,-53.5 24.4,-54.8 21.5,-56.0 18.5,-57.1 15.5,-58.0 12.5,-58.7 9.4,-59.3 6.3,-59.7 3.1,-59.9 0.0,-60.0 -3.1,-59.9 -6.3,-59.7 -9.4,-59.3 -12.5,-58.7 -15.5,-58.0 -18.5,-57.1 -21.5,-56.0 -24.4,-54.8 -27.2,-53.5 -30.0,-52.0 -32.7,-50.3 -35.3,-48.5 -37.8,-46.6 -40.1,-44.6 -42.4,-42.4 -44.6,-40.1 -46.6,-37.8 -48.5,-35.3 -50.3,-32.7 -52.0,-30.0 -53.5,-27.2 -54.8,-24.4 -56.0,-21.5 -57.1,-18.5 -58.0,-15.5 -58.7,-12.5 -59.3,-9.4 -59.7,-6.3 -59.9,-3.1 -60.0,-0.0 -59.9,3.1 -59.7,6.3 -59.3,9.4 -58.7,12.5 -58.0,15.5 -57.1,18.5 -56.0,21.5 -54.8,24.4 -53.5,27.2 -52.0,30.0 -50.3,32.7 -48.5,35.3 -46.6,37.8 -44.6,40.1 -42.4,42.4 -40.1,44.6 -37.8,46.6 -35.3,48.5 -32.7,50.3 -30.0,52.0 -27.2,53.5 -24.4,54.8 -21.5,56.0 -18.5,57.1 -15.5,58.0 -12.5,58.7 -9.4,59.3 -6.3,59.7 -3.1,59.9 0.0,60.0" fill="none" stroke="orange" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+</svg></div>
+  <p>Egy sárga kör, körülötte 12 narancssárga sugár.</p>
+  <details><summary>Tipp</summary><p>A sugarak között 360 / 12 = 30° van. Menj a középpontba, fordulj, rajzolj egy vonalat, gyere vissza.</p></details>
+</article>
+<article class="kartya" id="f7">
+  <div class="fej"><span class="szam">7.</span><h2>Egymásba nőtt sokszögek</h2><span class="szint sz2" title="Közepes">★★☆</span></div>
+  <div class="vaszon"><svg class="kep" xmlns="http://www.w3.org/2000/svg" viewBox="-81.1 -198.7 222.2 212.7" role="img">
+<rect x="-81.1" y="-198.7" width="222.2" height="212.7" fill="white"/>
+<polyline points="0.0,-0.0 60.0,-0.0 30.0,-52.0 -0.0,-0.0" fill="none" stroke="red" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,-0.0 60.0,-0.0 60.0,-60.0 -0.0,-60.0 -0.0,-0.0" fill="none" stroke="orange" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,-0.0 60.0,-0.0 78.5,-57.1 30.0,-92.3 -18.5,-57.1 -0.0,-0.0" fill="none" stroke="gold" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,-0.0 60.0,-0.0 90.0,-52.0 60.0,-103.9 -0.0,-103.9 -30.0,-52.0 -0.0,-0.0" fill="none" stroke="green" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,-0.0 60.0,-0.0 97.4,-46.9 84.1,-105.4 30.0,-131.4 -24.1,-105.4 -37.4,-46.9 0.0,-0.0" fill="none" stroke="teal" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="0.0,-0.0 60.0,-0.0 102.4,-42.4 102.4,-102.4 60.0,-144.9 -0.0,-144.9 -42.4,-102.4 -42.4,-42.4 0.0,-0.0" fill="none" stroke="blue" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="0.0,-0.0 60.0,-0.0 106.0,-38.6 116.4,-97.7 86.4,-149.6 30.0,-170.1 -26.4,-149.6 -56.4,-97.7 -46.0,-38.6 -0.0,-0.0" fill="none" stroke="purple" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,-0.0 60.0,-0.0 108.5,-35.3 127.1,-92.3 108.5,-149.4 60.0,-184.7 -0.0,-184.7 -48.5,-149.4 -67.1,-92.3 -48.5,-35.3 -0.0,-0.0" fill="none" stroke="magenta" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+</svg></div>
+  <p>Minden sokszög ugyanonnan indul, ugyanakkora oldallal: háromszögtől tízszögig. Minden sokszög más színű.</p>
+  <details><summary>Tipp</summary><p>Két ciklus kell: a külső az oldalszám (3-tól 10-ig), a belső rajzolja meg a sokszöget.</p></details>
+</article>
+<article class="kartya" id="f8">
+  <div class="fej"><span class="szam">8.</span><h2>Négyzet-céltábla</h2><span class="szint sz2" title="Közepes">★★☆</span></div>
+  <div class="vaszon"><svg class="kep" xmlns="http://www.w3.org/2000/svg" viewBox="-134.0 -134.0 268.0 268.0" role="img">
+<rect x="-134.0" y="-134.0" width="268.0" height="268.0" fill="white"/>
+<polygon points="-120.0,120.0 120.0,120.0 120.0,-120.0 -120.0,-120.0 -120.0,120.0" fill="red"/>
+<polyline points="-120.0,120.0 120.0,120.0 120.0,-120.0 -120.0,-120.0 -120.0,120.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-100.0,100.0 100.0,100.0 100.0,-100.0 -100.0,-100.0 -100.0,100.0" fill="white"/>
+<polyline points="-100.0,100.0 100.0,100.0 100.0,-100.0 -100.0,-100.0 -100.0,100.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-80.0,80.0 80.0,80.0 80.0,-80.0 -80.0,-80.0 -80.0,80.0" fill="red"/>
+<polyline points="-80.0,80.0 80.0,80.0 80.0,-80.0 -80.0,-80.0 -80.0,80.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-60.0,60.0 60.0,60.0 60.0,-60.0 -60.0,-60.0 -60.0,60.0" fill="white"/>
+<polyline points="-60.0,60.0 60.0,60.0 60.0,-60.0 -60.0,-60.0 -60.0,60.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-40.0,40.0 40.0,40.0 40.0,-40.0 -40.0,-40.0 -40.0,40.0" fill="red"/>
+<polyline points="-40.0,40.0 40.0,40.0 40.0,-40.0 -40.0,-40.0 -40.0,40.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-20.0,20.0 20.0,20.0 20.0,-20.0 -20.0,-20.0 -20.0,20.0" fill="white"/>
+<polyline points="-20.0,20.0 20.0,20.0 20.0,-20.0 -20.0,-20.0 -20.0,20.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+</svg></div>
+  <p>Egymásba rajzolt, egyre kisebb négyzetek, felváltva piros és fehér színnel. Mindnek ugyanaz a közepe.</p>
+  <details><summary>Tipp</summary><p>Egy a oldalú négyzetet a (-a/2, -a/2) pontból indítva a közepe (0, 0) lesz. Kezdd a legnagyobbal!</p></details>
+</article>
+<article class="kartya" id="f9">
+  <div class="fej"><span class="szam">9.</span><h2>Háromszög-virág</h2><span class="szint sz2" title="Közepes">★★☆</span></div>
+  <div class="vaszon"><svg class="kep" xmlns="http://www.w3.org/2000/svg" viewBox="-114.0 -100.6 228.0 201.2" role="img">
+<rect x="-114.0" y="-100.6" width="228.0" height="201.2" fill="white"/>
+<polygon points="0.0,-0.0 100.0,-0.0 50.0,-86.6 -0.0,-0.0" fill="red"/>
+<polyline points="0.0,-0.0 100.0,-0.0 50.0,-86.6 -0.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-0.0,-0.0 50.0,-86.6 -50.0,-86.6 0.0,-0.0" fill="orange"/>
+<polyline points="-0.0,-0.0 50.0,-86.6 -50.0,-86.6 0.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="0.0,-0.0 -50.0,-86.6 -100.0,-0.0 -0.0,-0.0" fill="gold"/>
+<polyline points="0.0,-0.0 -50.0,-86.6 -100.0,-0.0 -0.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-0.0,-0.0 -100.0,-0.0 -50.0,86.6 0.0,-0.0" fill="green"/>
+<polyline points="-0.0,-0.0 -100.0,-0.0 -50.0,86.6 0.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="0.0,-0.0 -50.0,86.6 50.0,86.6 -0.0,-0.0" fill="blue"/>
+<polyline points="0.0,-0.0 -50.0,86.6 50.0,86.6 -0.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-0.0,-0.0 50.0,86.6 100.0,-0.0 0.0,-0.0" fill="purple"/>
+<polyline points="-0.0,-0.0 50.0,86.6 100.0,-0.0 0.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+</svg></div>
+  <p>Hat kitöltött háromszög egy közös pont körül, mindegyik más színű.</p>
+  <details><summary>Tipp</summary><p>Rajzolj egy háromszöget, aztán fordulj 60°-ot, és kezdd újra ugyanonnan.</p></details>
+</article>
+<article class="kartya" id="f10">
+  <div class="fej"><span class="szam">10.</span><h2>Forgó négyzetek</h2><span class="szint sz3" title="Nehéz">★★★</span></div>
+  <div class="vaszon"><svg class="kep" xmlns="http://www.w3.org/2000/svg" viewBox="-154.9 -154.9 309.8 309.8" role="img">
+<rect x="-154.9" y="-154.9" width="309.8" height="309.8" fill="white"/>
+<polyline points="0.0,-0.0 100.0,-0.0 100.0,-100.0 0.0,-100.0 -0.0,-0.0" fill="none" stroke="blue" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,-0.0 98.5,-17.4 81.1,-115.8 -17.4,-98.5 -0.0,0.0" fill="none" stroke="purple" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,0.0 94.0,-34.2 59.8,-128.2 -34.2,-94.0 -0.0,0.0" fill="none" stroke="blue" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,0.0 86.6,-50.0 36.6,-136.6 -50.0,-86.6 0.0,0.0" fill="none" stroke="purple" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="0.0,0.0 76.6,-64.3 12.3,-140.9 -64.3,-76.6 0.0,0.0" fill="none" stroke="blue" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="0.0,0.0 64.3,-76.6 -12.3,-140.9 -76.6,-64.3 -0.0,0.0" fill="none" stroke="purple" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,0.0 50.0,-86.6 -36.6,-136.6 -86.6,-50.0 -0.0,0.0" fill="none" stroke="blue" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,0.0 34.2,-94.0 -59.8,-128.2 -94.0,-34.2 -0.0,0.0" fill="none" stroke="purple" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,0.0 17.4,-98.5 -81.1,-115.8 -98.5,-17.4 -0.0,0.0" fill="none" stroke="blue" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,0.0 -0.0,-100.0 -100.0,-100.0 -100.0,0.0 -0.0,0.0" fill="none" stroke="purple" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,0.0 -17.4,-98.5 -115.8,-81.1 -98.5,17.4 -0.0,0.0" fill="none" stroke="blue" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,0.0 -34.2,-94.0 -128.2,-59.8 -94.0,34.2 -0.0,0.0" fill="none" stroke="purple" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,0.0 -50.0,-86.6 -136.6,-36.6 -86.6,50.0 -0.0,0.0" fill="none" stroke="blue" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,0.0 -64.3,-76.6 -140.9,-12.3 -76.6,64.3 -0.0,0.0" fill="none" stroke="purple" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,0.0 -76.6,-64.3 -140.9,12.3 -64.3,76.6 -0.0,0.0" fill="none" stroke="blue" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,0.0 -86.6,-50.0 -136.6,36.6 -50.0,86.6 -0.0,0.0" fill="none" stroke="purple" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,0.0 -94.0,-34.2 -128.2,59.8 -34.2,94.0 -0.0,0.0" fill="none" stroke="blue" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,0.0 -98.5,-17.4 -115.8,81.1 -17.4,98.5 -0.0,0.0" fill="none" stroke="purple" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,0.0 -100.0,0.0 -100.0,100.0 -0.0,100.0 -0.0,0.0" fill="none" stroke="blue" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,0.0 -98.5,17.4 -81.1,115.8 17.4,98.5 -0.0,0.0" fill="none" stroke="purple" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,0.0 -94.0,34.2 -59.8,128.2 34.2,94.0 -0.0,0.0" fill="none" stroke="blue" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,0.0 -86.6,50.0 -36.6,136.6 50.0,86.6 -0.0,0.0" fill="none" stroke="purple" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,0.0 -76.6,64.3 -12.3,140.9 64.3,76.6 -0.0,0.0" fill="none" stroke="blue" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,0.0 -64.3,76.6 12.3,140.9 76.6,64.3 -0.0,0.0" fill="none" stroke="purple" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,0.0 -50.0,86.6 36.6,136.6 86.6,50.0 -0.0,0.0" fill="none" stroke="blue" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,0.0 -34.2,94.0 59.8,128.2 94.0,34.2 -0.0,0.0" fill="none" stroke="purple" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,0.0 -17.4,98.5 81.1,115.8 98.5,17.4 -0.0,0.0" fill="none" stroke="blue" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,0.0 -0.0,100.0 100.0,100.0 100.0,0.0 -0.0,0.0" fill="none" stroke="purple" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,0.0 17.4,98.5 115.8,81.1 98.5,-17.4 -0.0,0.0" fill="none" stroke="blue" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,0.0 34.2,94.0 128.2,59.8 94.0,-34.2 -0.0,0.0" fill="none" stroke="purple" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,0.0 50.0,86.6 136.6,36.6 86.6,-50.0 -0.0,0.0" fill="none" stroke="blue" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,0.0 64.3,76.6 140.9,12.3 76.6,-64.3 -0.0,0.0" fill="none" stroke="purple" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,0.0 76.6,64.3 140.9,-12.3 64.3,-76.6 -0.0,0.0" fill="none" stroke="blue" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,0.0 86.6,50.0 136.6,-36.6 50.0,-86.6 -0.0,0.0" fill="none" stroke="purple" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,0.0 94.0,34.2 128.2,-59.8 34.2,-94.0 -0.0,0.0" fill="none" stroke="blue" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.0,0.0 98.5,17.4 115.8,-81.1 17.4,-98.5 -0.0,0.0" fill="none" stroke="purple" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+</svg></div>
+  <p>36 négyzet ugyanabból a pontból, mindegyik 10°-kal elforgatva az előzőhöz képest.</p>
+  <details><summary>Tipp</summary><p>36 × 10° = 360°, vagyis körbeér. A színt váltogathatod: páros i → kék, páratlan → lila.</p></details>
+</article>
+<article class="kartya" id="f11">
+  <div class="fej"><span class="szam">11.</span><h2>Négyzetes csiga</h2><span class="szint sz3" title="Nehéz">★★★</span></div>
+  <div class="vaszon"><svg class="kep" xmlns="http://www.w3.org/2000/svg" viewBox="-154.0 -174.0 318.0 328.0" role="img">
+<rect x="-154.0" y="-174.0" width="318.0" height="328.0" fill="white"/>
+<polyline points="0.0,-0.0 10.0,-0.0 10.0,-20.0 -20.0,-20.0 -20.0,20.0 30.0,20.0 30.0,-40.0 -40.0,-40.0 -40.0,40.0 50.0,40.0 50.0,-60.0 -60.0,-60.0 -60.0,60.0 70.0,60.0 70.0,-80.0 -80.0,-80.0 -80.0,80.0 90.0,80.0 90.0,-100.0 -100.0,-100.0 -100.0,100.0 110.0,100.0 110.0,-120.0 -120.0,-120.0 -120.0,120.0 130.0,120.0 130.0,-140.0 -140.0,-140.0 -140.0,140.0 150.0,140.0 150.0,-160.0" fill="none" stroke="darkgreen" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+</svg></div>
+  <p>Szögletes spirál: minden szakasz 10-zel hosszabb az előzőnél, és mindig 90°-ot fordulunk.</p>
+  <details><summary>Tipp</summary><p>Egy változóban tárold a hosszt, és a ciklusban mindig növeld meg.</p></details>
+</article>
+<article class="kartya" id="f12">
+  <div class="fej"><span class="szam">12.</span><h2>Sakktábla</h2><span class="szint sz3" title="Nehéz">★★★</span></div>
+  <div class="vaszon"><svg class="kep" xmlns="http://www.w3.org/2000/svg" viewBox="-134.0 -134.0 268.0 268.0" role="img">
+<rect x="-134.0" y="-134.0" width="268.0" height="268.0" fill="white"/>
+<polygon points="-120.0,120.0 -80.0,120.0 -80.0,80.0 -120.0,80.0 -120.0,120.0" fill="black"/>
+<polyline points="-120.0,120.0 -80.0,120.0 -80.0,80.0 -120.0,80.0 -120.0,120.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-80.0,120.0 -40.0,120.0 -40.0,80.0 -80.0,80.0 -80.0,120.0" fill="white"/>
+<polyline points="-80.0,120.0 -40.0,120.0 -40.0,80.0 -80.0,80.0 -80.0,120.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-40.0,120.0 0.0,120.0 0.0,80.0 -40.0,80.0 -40.0,120.0" fill="black"/>
+<polyline points="-40.0,120.0 0.0,120.0 0.0,80.0 -40.0,80.0 -40.0,120.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="0.0,120.0 40.0,120.0 40.0,80.0 0.0,80.0 -0.0,120.0" fill="white"/>
+<polyline points="0.0,120.0 40.0,120.0 40.0,80.0 0.0,80.0 -0.0,120.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="40.0,120.0 80.0,120.0 80.0,80.0 40.0,80.0 40.0,120.0" fill="black"/>
+<polyline points="40.0,120.0 80.0,120.0 80.0,80.0 40.0,80.0 40.0,120.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="80.0,120.0 120.0,120.0 120.0,80.0 80.0,80.0 80.0,120.0" fill="white"/>
+<polyline points="80.0,120.0 120.0,120.0 120.0,80.0 80.0,80.0 80.0,120.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-120.0,80.0 -80.0,80.0 -80.0,40.0 -120.0,40.0 -120.0,80.0" fill="white"/>
+<polyline points="-120.0,80.0 -80.0,80.0 -80.0,40.0 -120.0,40.0 -120.0,80.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-80.0,80.0 -40.0,80.0 -40.0,40.0 -80.0,40.0 -80.0,80.0" fill="black"/>
+<polyline points="-80.0,80.0 -40.0,80.0 -40.0,40.0 -80.0,40.0 -80.0,80.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-40.0,80.0 0.0,80.0 0.0,40.0 -40.0,40.0 -40.0,80.0" fill="white"/>
+<polyline points="-40.0,80.0 0.0,80.0 0.0,40.0 -40.0,40.0 -40.0,80.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="0.0,80.0 40.0,80.0 40.0,40.0 0.0,40.0 -0.0,80.0" fill="black"/>
+<polyline points="0.0,80.0 40.0,80.0 40.0,40.0 0.0,40.0 -0.0,80.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="40.0,80.0 80.0,80.0 80.0,40.0 40.0,40.0 40.0,80.0" fill="white"/>
+<polyline points="40.0,80.0 80.0,80.0 80.0,40.0 40.0,40.0 40.0,80.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="80.0,80.0 120.0,80.0 120.0,40.0 80.0,40.0 80.0,80.0" fill="black"/>
+<polyline points="80.0,80.0 120.0,80.0 120.0,40.0 80.0,40.0 80.0,80.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-120.0,40.0 -80.0,40.0 -80.0,-0.0 -120.0,-0.0 -120.0,40.0" fill="black"/>
+<polyline points="-120.0,40.0 -80.0,40.0 -80.0,-0.0 -120.0,-0.0 -120.0,40.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-80.0,40.0 -40.0,40.0 -40.0,-0.0 -80.0,-0.0 -80.0,40.0" fill="white"/>
+<polyline points="-80.0,40.0 -40.0,40.0 -40.0,-0.0 -80.0,-0.0 -80.0,40.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-40.0,40.0 0.0,40.0 0.0,-0.0 -40.0,-0.0 -40.0,40.0" fill="black"/>
+<polyline points="-40.0,40.0 0.0,40.0 0.0,-0.0 -40.0,-0.0 -40.0,40.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="0.0,40.0 40.0,40.0 40.0,-0.0 0.0,-0.0 -0.0,40.0" fill="white"/>
+<polyline points="0.0,40.0 40.0,40.0 40.0,-0.0 0.0,-0.0 -0.0,40.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="40.0,40.0 80.0,40.0 80.0,-0.0 40.0,-0.0 40.0,40.0" fill="black"/>
+<polyline points="40.0,40.0 80.0,40.0 80.0,-0.0 40.0,-0.0 40.0,40.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="80.0,40.0 120.0,40.0 120.0,-0.0 80.0,-0.0 80.0,40.0" fill="white"/>
+<polyline points="80.0,40.0 120.0,40.0 120.0,-0.0 80.0,-0.0 80.0,40.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-120.0,0.0 -80.0,-0.0 -80.0,-40.0 -120.0,-40.0 -120.0,-0.0" fill="white"/>
+<polyline points="-120.0,0.0 -80.0,-0.0 -80.0,-40.0 -120.0,-40.0 -120.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-80.0,0.0 -40.0,-0.0 -40.0,-40.0 -80.0,-40.0 -80.0,-0.0" fill="black"/>
+<polyline points="-80.0,0.0 -40.0,-0.0 -40.0,-40.0 -80.0,-40.0 -80.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-40.0,0.0 0.0,-0.0 0.0,-40.0 -40.0,-40.0 -40.0,-0.0" fill="white"/>
+<polyline points="-40.0,0.0 0.0,-0.0 0.0,-40.0 -40.0,-40.0 -40.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="0.0,0.0 40.0,-0.0 40.0,-40.0 0.0,-40.0 -0.0,-0.0" fill="black"/>
+<polyline points="0.0,0.0 40.0,-0.0 40.0,-40.0 0.0,-40.0 -0.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="40.0,0.0 80.0,-0.0 80.0,-40.0 40.0,-40.0 40.0,-0.0" fill="white"/>
+<polyline points="40.0,0.0 80.0,-0.0 80.0,-40.0 40.0,-40.0 40.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="80.0,0.0 120.0,-0.0 120.0,-40.0 80.0,-40.0 80.0,-0.0" fill="black"/>
+<polyline points="80.0,0.0 120.0,-0.0 120.0,-40.0 80.0,-40.0 80.0,-0.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-120.0,-40.0 -80.0,-40.0 -80.0,-80.0 -120.0,-80.0 -120.0,-40.0" fill="black"/>
+<polyline points="-120.0,-40.0 -80.0,-40.0 -80.0,-80.0 -120.0,-80.0 -120.0,-40.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-80.0,-40.0 -40.0,-40.0 -40.0,-80.0 -80.0,-80.0 -80.0,-40.0" fill="white"/>
+<polyline points="-80.0,-40.0 -40.0,-40.0 -40.0,-80.0 -80.0,-80.0 -80.0,-40.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-40.0,-40.0 0.0,-40.0 0.0,-80.0 -40.0,-80.0 -40.0,-40.0" fill="black"/>
+<polyline points="-40.0,-40.0 0.0,-40.0 0.0,-80.0 -40.0,-80.0 -40.0,-40.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="0.0,-40.0 40.0,-40.0 40.0,-80.0 0.0,-80.0 -0.0,-40.0" fill="white"/>
+<polyline points="0.0,-40.0 40.0,-40.0 40.0,-80.0 0.0,-80.0 -0.0,-40.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="40.0,-40.0 80.0,-40.0 80.0,-80.0 40.0,-80.0 40.0,-40.0" fill="black"/>
+<polyline points="40.0,-40.0 80.0,-40.0 80.0,-80.0 40.0,-80.0 40.0,-40.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="80.0,-40.0 120.0,-40.0 120.0,-80.0 80.0,-80.0 80.0,-40.0" fill="white"/>
+<polyline points="80.0,-40.0 120.0,-40.0 120.0,-80.0 80.0,-80.0 80.0,-40.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-120.0,-80.0 -80.0,-80.0 -80.0,-120.0 -120.0,-120.0 -120.0,-80.0" fill="white"/>
+<polyline points="-120.0,-80.0 -80.0,-80.0 -80.0,-120.0 -120.0,-120.0 -120.0,-80.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-80.0,-80.0 -40.0,-80.0 -40.0,-120.0 -80.0,-120.0 -80.0,-80.0" fill="black"/>
+<polyline points="-80.0,-80.0 -40.0,-80.0 -40.0,-120.0 -80.0,-120.0 -80.0,-80.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="-40.0,-80.0 0.0,-80.0 0.0,-120.0 -40.0,-120.0 -40.0,-80.0" fill="white"/>
+<polyline points="-40.0,-80.0 0.0,-80.0 0.0,-120.0 -40.0,-120.0 -40.0,-80.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="0.0,-80.0 40.0,-80.0 40.0,-120.0 0.0,-120.0 -0.0,-80.0" fill="black"/>
+<polyline points="0.0,-80.0 40.0,-80.0 40.0,-120.0 0.0,-120.0 -0.0,-80.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="40.0,-80.0 80.0,-80.0 80.0,-120.0 40.0,-120.0 40.0,-80.0" fill="white"/>
+<polyline points="40.0,-80.0 80.0,-80.0 80.0,-120.0 40.0,-120.0 40.0,-80.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="80.0,-80.0 120.0,-80.0 120.0,-120.0 80.0,-120.0 80.0,-80.0" fill="black"/>
+<polyline points="80.0,-80.0 120.0,-80.0 120.0,-120.0 80.0,-120.0 80.0,-80.0" fill="none" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+</svg></div>
+  <p>Egy 6×6-os sakktábla, fekete és fehér mezőkkel.</p>
+  <details><summary>Tipp</summary><p>Két egymásba ágyazott ciklus: sor és oszlop. Fekete a mező, ha (sor + oszlop) páros.</p></details>
+</article>
+<article class="kartya" id="f13">
+  <div class="fej"><span class="szam">13.</span><h2>Szivárvány-spirál</h2><span class="szint sz3" title="Nehéz">★★★</span></div>
+  <div class="vaszon"><svg class="kep" xmlns="http://www.w3.org/2000/svg" viewBox="-187.4 -171.2 376.2 342.0" role="img">
+<rect x="-187.4" y="-171.2" width="376.2" height="342.0" fill="black"/>
+<polyline points="0.0,-0.0 0.0,-0.0" fill="none" stroke="red" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="0.0,-0.0 0.5,-0.9" fill="none" stroke="orange" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="0.5,-0.9 -0.6,-2.6" fill="none" stroke="yellow" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.6,-2.6 -3.6,-2.4" fill="none" stroke="green" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-3.6,-2.4 -5.3,1.2" fill="none" stroke="blue" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-5.3,1.2 -2.5,5.3" fill="none" stroke="purple" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-2.5,5.3 3.5,4.7" fill="none" stroke="red" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="3.5,4.7 6.2,-1.8" fill="none" stroke="orange" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="6.2,-1.8 1.3,-8.1" fill="none" stroke="yellow" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="1.3,-8.1 -7.6,-6.7" fill="none" stroke="green" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-7.6,-6.7 -11.0,2.7" fill="none" stroke="blue" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-11.0,2.7 -3.8,11.0" fill="none" stroke="purple" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-3.8,11.0 8.0,8.5" fill="none" stroke="red" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="8.0,8.5 11.8,-3.9" fill="none" stroke="orange" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="11.8,-3.9 2.0,-14.0" fill="none" stroke="yellow" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="2.0,-14.0 -12.4,-10.1" fill="none" stroke="green" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-12.4,-10.1 -16.3,5.4" fill="none" stroke="blue" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-16.3,5.4 -3.9,17.0" fill="none" stroke="purple" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-3.9,17.0 13.2,11.5" fill="none" stroke="red" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="13.2,11.5 16.9,-7.2" fill="none" stroke="orange" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="16.9,-7.2 1.5,-20.1" fill="none" stroke="yellow" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="1.5,-20.1 -18.1,-12.5" fill="none" stroke="green" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-18.1,-12.5 -21.1,9.3" fill="none" stroke="blue" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-21.1,9.3 -2.8,23.1" fill="none" stroke="purple" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-2.8,23.1 19.2,13.3" fill="none" stroke="red" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="19.2,13.3 21.3,-11.6" fill="none" stroke="orange" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="21.3,-11.6 -0.2,-26.1" fill="none" stroke="yellow" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.2,-26.1 -24.3,-13.9" fill="none" stroke="green" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-24.3,-13.9 -25.2,14.1" fill="none" stroke="blue" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-25.2,14.1 -0.4,29.1" fill="none" stroke="purple" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-0.4,29.1 25.6,14.1" fill="none" stroke="red" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="25.6,14.1 25.1,-16.9" fill="none" stroke="orange" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="25.1,-16.9 -3.2,-32.0" fill="none" stroke="yellow" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-3.2,-32.0 -30.9,-14.0" fill="none" stroke="green" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-30.9,-14.0 -28.5,19.9" fill="none" stroke="blue" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-28.5,19.9 3.2,34.7" fill="none" stroke="purple" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="3.2,34.7 32.3,13.6" fill="none" stroke="red" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="32.3,13.6 27.8,-23.2" fill="none" stroke="orange" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="27.8,-23.2 -7.4,-37.4" fill="none" stroke="yellow" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-7.4,-37.4 -37.7,-12.8" fill="none" stroke="green" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-37.7,-12.8 -30.8,26.5" fill="none" stroke="blue" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-30.8,26.5 8.0,39.9" fill="none" stroke="purple" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="8.0,39.9 39.2,11.8" fill="none" stroke="red" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="39.2,11.8 29.5,-30.1" fill="none" stroke="orange" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="29.5,-30.1 -12.8,-42.2" fill="none" stroke="yellow" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-12.8,-42.2 -44.6,-10.4" fill="none" stroke="green" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-44.6,-10.4 -31.9,33.8" fill="none" stroke="blue" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-31.9,33.8 13.9,44.4" fill="none" stroke="purple" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="13.9,44.4 46.0,8.7" fill="none" stroke="red" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="46.0,8.7 30.1,-37.6" fill="none" stroke="orange" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="30.1,-37.6 -19.2,-46.3" fill="none" stroke="yellow" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-19.2,-46.3 -51.3,-6.7" fill="none" stroke="green" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-51.3,-6.7 -31.8,41.5" fill="none" stroke="blue" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-31.8,41.5 20.8,48.0" fill="none" stroke="purple" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="20.8,48.0 52.6,4.3" fill="none" stroke="red" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="52.6,4.3 29.3,-45.5" fill="none" stroke="orange" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="29.3,-45.5 -26.6,-49.4" fill="none" stroke="yellow" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-26.6,-49.4 -57.6,-1.6" fill="none" stroke="green" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-57.6,-1.6 -30.4,49.6" fill="none" stroke="blue" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-30.4,49.6 28.6,50.6" fill="none" stroke="purple" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="28.6,50.6 58.6,-1.4" fill="none" stroke="red" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="58.6,-1.4 27.2,-53.6" fill="none" stroke="orange" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="27.2,-53.6 -34.8,-51.5" fill="none" stroke="yellow" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-34.8,-51.5 -63.4,4.7" fill="none" stroke="green" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-63.4,4.7 -27.6,57.7" fill="none" stroke="blue" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-27.6,57.7 37.2,52.0" fill="none" stroke="purple" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="37.2,52.0 64.0,-8.2" fill="none" stroke="red" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="64.0,-8.2 23.7,-61.8" fill="none" stroke="orange" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="23.7,-61.8 -43.6,-52.3" fill="none" stroke="yellow" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-43.6,-52.3 -68.4,12.1" fill="none" stroke="green" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-68.4,12.1 -23.4,65.7" fill="none" stroke="blue" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-23.4,65.7 46.3,52.2" fill="none" stroke="purple" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="46.3,52.2 68.6,-16.3" fill="none" stroke="red" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="68.6,-16.3 18.8,-69.7" fill="none" stroke="orange" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="18.8,-69.7 -53.0,-51.8" fill="none" stroke="yellow" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-53.0,-51.8 -72.4,20.7" fill="none" stroke="green" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-72.4,20.7 -17.8,73.5" fill="none" stroke="blue" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-17.8,73.5 55.9,51.0" fill="none" stroke="purple" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="55.9,51.0 72.1,-25.3" fill="none" stroke="red" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="72.1,-25.3 12.5,-77.2" fill="none" stroke="orange" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="12.5,-77.2 -62.7,-49.8" fill="none" stroke="yellow" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-62.7,-49.8 -75.4,30.2" fill="none" stroke="green" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-75.4,30.2 -10.7,80.7" fill="none" stroke="blue" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-10.7,80.7 65.7,48.3" fill="none" stroke="purple" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="65.7,48.3 74.4,-35.3" fill="none" stroke="red" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="74.4,-35.3 4.8,-84.0" fill="none" stroke="orange" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="4.8,-84.0 -72.5,-46.3" fill="none" stroke="yellow" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-72.5,-46.3 -77.0,40.5" fill="none" stroke="green" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-77.0,40.5 -2.4,87.2" fill="none" stroke="blue" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-2.4,87.2 75.4,44.0" fill="none" stroke="purple" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="75.4,44.0 75.4,-46.0" fill="none" stroke="red" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="75.4,-46.0 -4.2,-90.1" fill="none" stroke="orange" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-4.2,-90.1 -82.2,-41.3" fill="none" stroke="yellow" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-82.2,-41.3 -77.3,51.5" fill="none" stroke="green" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-77.3,51.5 7.2,92.7" fill="none" stroke="blue" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="7.2,92.7 85.0,38.3" fill="none" stroke="purple" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="85.0,38.3 75.0,-57.2" fill="none" stroke="red" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="75.0,-57.2 -14.3,-95.1" fill="none" stroke="orange" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-14.3,-95.1 -91.6,-34.8" fill="none" stroke="yellow" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-91.6,-34.8 -76.1,63.0" fill="none" stroke="green" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-76.1,63.0 17.9,97.2" fill="none" stroke="blue" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="17.9,97.2 94.1,30.9" fill="none" stroke="purple" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="94.1,30.9 72.9,-68.8" fill="none" stroke="red" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="72.9,-68.8 -25.6,-99.0" fill="none" stroke="orange" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-25.6,-99.0 -100.4,-26.7" fill="none" stroke="yellow" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-100.4,-26.7 -73.2,74.7" fill="none" stroke="green" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-73.2,74.7 29.6,100.4" fill="none" stroke="blue" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="29.6,100.4 102.6,22.1" fill="none" stroke="purple" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="102.6,22.1 69.2,-80.6" fill="none" stroke="red" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="69.2,-80.6 -37.8,-101.4" fill="none" stroke="orange" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-37.8,-101.4 -108.5,-17.1" fill="none" stroke="yellow" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-108.5,-17.1 -68.7,86.5" fill="none" stroke="green" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-68.7,86.5 42.2,102.1" fill="none" stroke="blue" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="42.2,102.1 110.2,11.8" fill="none" stroke="purple" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="110.2,11.8 63.9,-92.3" fill="none" stroke="red" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="63.9,-92.3 -50.7,-102.3" fill="none" stroke="orange" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-50.7,-102.3 -115.6,-6.2" fill="none" stroke="yellow" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-115.6,-6.2 -62.5,98.1" fill="none" stroke="green" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-62.5,98.1 55.5,102.2" fill="none" stroke="blue" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="55.5,102.2 116.8,0.2" fill="none" stroke="purple" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="116.8,0.2 56.8,-103.7" fill="none" stroke="red" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="56.8,-103.7 -64.2,-101.6" fill="none" stroke="orange" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-64.2,-101.6 -121.5,6.1" fill="none" stroke="yellow" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-121.5,6.1 -54.5,109.3" fill="none" stroke="green" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-54.5,109.3 69.2,100.6" fill="none" stroke="blue" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="69.2,100.6 122.0,-12.7" fill="none" stroke="purple" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="122.0,-12.7 48.0,-114.6" fill="none" stroke="red" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="48.0,-114.6 -78.1,-99.1" fill="none" stroke="orange" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-78.1,-99.1 -126.0,19.5" fill="none" stroke="yellow" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-126.0,19.5 -44.9,119.8" fill="none" stroke="green" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-44.9,119.8 83.2,97.2" fill="none" stroke="blue" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="83.2,97.2 125.8,-26.6" fill="none" stroke="purple" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="125.8,-26.6 37.5,-124.7" fill="none" stroke="red" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="37.5,-124.7 -92.1,-94.8" fill="none" stroke="orange" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-92.1,-94.8 -129.0,34.0" fill="none" stroke="yellow" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-129.0,34.0 -33.6,129.4" fill="none" stroke="green" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-33.6,129.4 97.1,92.0" fill="none" stroke="blue" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="97.1,92.0 128.0,-41.5" fill="none" stroke="purple" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="128.0,-41.5 25.4,-133.9" fill="none" stroke="red" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="25.4,-133.9 -106.0,-88.6" fill="none" stroke="orange" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-106.0,-88.6 -130.3,49.3" fill="none" stroke="yellow" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-130.3,49.3 -20.7,138.0" fill="none" stroke="green" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-20.7,138.0 110.9,84.8" fill="none" stroke="blue" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="110.9,84.8 128.3,-57.1" fill="none" stroke="purple" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="128.3,-57.1 11.8,-141.8" fill="none" stroke="red" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="11.8,-141.8 -119.6,-80.5" fill="none" stroke="orange" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-119.6,-80.5 -129.8,65.1" fill="none" stroke="yellow" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-129.8,65.1 -6.5,145.2" fill="none" stroke="green" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-6.5,145.2 124.2,75.7" fill="none" stroke="blue" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="124.2,75.7 126.8,-73.3" fill="none" stroke="purple" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="126.8,-73.3 -3.1,-148.3" fill="none" stroke="red" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-3.1,-148.3 -132.5,-70.5" fill="none" stroke="orange" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-132.5,-70.5 -127.2,81.4" fill="none" stroke="yellow" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-127.2,81.4 9.1,150.9" fill="none" stroke="green" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="9.1,150.9 136.8,64.8" fill="none" stroke="blue" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="136.8,64.8 123.3,-89.6" fill="none" stroke="purple" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="123.3,-89.6 -19.3,-153.1" fill="none" stroke="red" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-19.3,-153.1 -144.6,-58.6" fill="none" stroke="orange" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-144.6,-58.6 -122.7,97.9" fill="none" stroke="yellow" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-122.7,97.9 25.8,154.8" fill="none" stroke="green" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="25.8,154.8 148.4,52.0" fill="none" stroke="blue" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="148.4,52.0 117.6,-106.0" fill="none" stroke="purple" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="117.6,-106.0 -36.4,-156.1" fill="none" stroke="red" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-36.4,-156.1 -155.6,-44.9" fill="none" stroke="orange" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-155.6,-44.9 -116.0,114.2" fill="none" stroke="yellow" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-116.0,114.2 43.4,156.9" fill="none" stroke="green" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="43.4,156.9 158.7,37.5" fill="none" stroke="blue" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="158.7,37.5 109.9,-122.2" fill="none" stroke="purple" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="109.9,-122.2 -54.4,-157.2" fill="none" stroke="red" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-54.4,-157.2 -165.3,-29.6" fill="none" stroke="orange" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-165.3,-29.6 -107.2,130.1" fill="none" stroke="yellow" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-107.2,130.1 61.7,156.9" fill="none" stroke="green" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="61.7,156.9 167.6,21.4" fill="none" stroke="blue" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="167.6,21.4 100.0,-137.9" fill="none" stroke="purple" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="100.0,-137.9 -73.0,-156.1" fill="none" stroke="red" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-73.0,-156.1 -173.4,-12.7" fill="none" stroke="orange" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-173.4,-12.7 -96.2,145.5" fill="none" stroke="yellow" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="-96.2,145.5 80.5,154.7" fill="none" stroke="green" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="80.5,154.7 174.8,3.8" fill="none" stroke="blue" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="174.8,3.8 88.1,-152.8" fill="none" stroke="purple" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+</svg></div>
+  <p>Szorgalmi! Színes spirál: a szakaszok egyre hosszabbak, és mindig 61°-ot fordulunk (nem 60-at!).</p>
+  <details><summary>Tipp</summary><p>Hat színt váltogass: szinek[i % 6]. A hossz legyen maga az i.</p></details>
+</article>
+</main>
+<footer>Nem kell pontosan egyformának lennie. Ha kész vagy, színezd át, méretezd át, vagy találj ki saját képet!</footer>
+</div>
+</body>
+</html>
